@@ -141,8 +141,8 @@ export default {
       const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/products`;
       vm.isLoading = true;
       vm.$http.get(url).then((res) => {
-        this.relatedProducts = res.data.data.filter((item) => item.category === category
-        && item.id !== this.product.id);
+        vm.relatedProducts = res.data.data.filter((item) => item.category === category
+        && item.id !== vm.product.id);
 
         vm.isLoading = false;
       });
@@ -171,13 +171,13 @@ export default {
       let n = 0;
       let method = 'post';
 
-      n = Number(this.num);
+      n = Number(vm.num);
 
       const isInCart = vm.carts.filter((item) => item.product.id === id);
 
       if (isInCart.length > 0) {
         method = 'patch';
-        n = Number(isInCart[0].quantity) + Number(this.num);
+        n = Number(isInCart[0].quantity) + Number(vm.num);
       }
 
       const data = {

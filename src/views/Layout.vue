@@ -131,8 +131,8 @@ export default {
         vm.getCarts();
 
         // 若在 checkorder 頁則重整內頁購物車
-        if (this.$refs.view.$route.name === 'CreateOrder') {
-          this.$refs.view.getCarts();
+        if (vm.$refs.view.$route.name === 'CreateOrder') {
+          vm.$refs.view.getCarts();
         }
       }).catch(() => {
         const msg = {
