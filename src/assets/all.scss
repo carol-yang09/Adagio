@@ -1,0 +1,122 @@
+$font-logo: 'Kaushan Script', cursive;
+
+@import "~bootstrap/scss/functions";
+@import "./helpers/variables";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/bootstrap";
+@import "./_breakpoint";
+
+a {
+  display: inline-block;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+// 去除 Chrome input[type="number"] 上下箭頭
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+// 去除 Firefox input[type="number"] 上下箭頭
+input[type="number"]{
+  -moz-appearance: textfield;
+}
+
+.logo {
+  font-family: $font-logo;
+  color: $white;
+  font-size: 1.5rem;
+}
+
+// swiper pagination 設定
+
+.swiper-container{
+  --swiper-theme-color: $dark;
+  --swiper-navigation-size: 1.5rem;
+}
+
+// checkorder order 頁面
+
+.checkorder {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: calc(100vh - 3.5rem - 3rem);
+  padding: 2rem 1rem;
+  @include mobile {
+    padding: 3rem 0;
+  }
+}
+
+.step {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2.5rem;
+}
+
+.step-item {
+  display: none;
+  position: relative;
+  padding: 1rem 2rem;
+  background-color: $primary;
+  border: 2px solid darken($primary, 4%);
+  border-radius: 0.25rem;
+  color: $white;
+  @include mobile {
+    display: block;
+    margin-left: 10rem;
+  }
+  &:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 100%;
+    height: 100%;
+    background-color: $primary;
+    border-radius: 0.25rem;
+    z-index: -1;
+  }
+  &:after {
+    content: "";
+    display: none;
+    position: absolute;
+    right: 0;
+    width: 20rem;
+    height: 0.25rem;
+    background-color: $primary;
+    z-index: -2;
+    @include mobile {
+      display: block;
+    }
+  }
+  &:first-child {
+    margin-left: 0;
+    &:after {
+      display: none;
+    }
+  }
+  &.active {
+    background-color: $dark;
+    border: 2px solid $dark;
+    &:after {
+      background-color: $dark;
+    }
+  }
+}
+
+.step-active  {
+  display: block;
+}
+
+.checkorder-title {
+  margin-bottom: 2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 4px solid $dark;
+  font-size: 1.5rem;
+}
