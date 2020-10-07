@@ -271,6 +271,7 @@ export default {
       }
       vm.isLoading = true;
       vm.$http[method](url, vm.tempProduct).then(() => {
+        vm.isLoading = false;
         vm.getProducts();
         $('#editModal').modal('hide');
         const msg = {
@@ -293,6 +294,7 @@ export default {
       const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/admin/ec/product/${vm.tempProduct.id}`;
       vm.isLoading = true;
       vm.$http.delete(url).then(() => {
+        vm.isLoading = false;
         vm.getProducts();
         $('#delModal').modal('hide');
         const msg = {

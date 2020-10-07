@@ -210,6 +210,7 @@ export default {
       }
       vm.isLoading = true;
       vm.$http[method](url, vm.tempCoupon).then(() => {
+        vm.isLoading = false;
         vm.getCoupons();
         const msg = {
           icon: 'success',
@@ -231,6 +232,7 @@ export default {
       const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/admin/ec/coupon/${vm.tempCoupon.id}`;
       vm.isLoading = true;
       vm.$http.delete(url).then(() => {
+        vm.isLoading = false;
         vm.getCoupons();
         const msg = {
           icon: 'success',

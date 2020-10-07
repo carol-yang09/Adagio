@@ -83,6 +83,7 @@ export default {
       const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/admin/storage/${vm.tempStorage.id}`;
       vm.isLoading = true;
       vm.$http.delete(url).then(() => {
+        vm.isLoading = false;
         vm.getStorages();
         const msg = {
           icon: 'success',

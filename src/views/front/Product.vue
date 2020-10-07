@@ -149,6 +149,7 @@ export default {
       vm.isLoading = true;
       vm.$http.get(url).then((res) => {
         vm.product = res.data.data;
+        vm.isLoading = false;
         vm.getRelated(vm.product.category);
       });
     },
@@ -182,6 +183,7 @@ export default {
       };
       vm.isLoading = true;
       vm.$http[method](url, data).then(() => {
+        vm.isLoading = false;
         vm.getCarts();
         vm.$emit('get-carts');
 

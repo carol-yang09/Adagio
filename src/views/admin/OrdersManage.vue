@@ -80,6 +80,7 @@ export default {
       }
       vm.isLoading = true;
       vm.$http.patch(url, item.id).then(() => {
+        vm.isLoading = false;
         vm.getOrders();
         const msg = {
           icon: 'success',

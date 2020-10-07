@@ -134,6 +134,7 @@ export default {
       };
       vm.isLoading = true;
       vm.$http[method](url, data).then(() => {
+        vm.isLoading = false;
         vm.getCarts();
         vm.$emit('get-carts');
 

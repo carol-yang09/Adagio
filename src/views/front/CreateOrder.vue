@@ -249,6 +249,7 @@ export default {
           icon: 'success',
           title: '已刪除此筆資料',
         };
+        vm.isLoading = false;
         vm.$bus.$emit('alertmessage', msg);
 
         vm.$emit('get-carts');

@@ -121,6 +121,7 @@ export default {
       const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/shopping/${id}`;
       vm.isLoading = true;
       vm.$http.delete(url, { product: id }).then(() => {
+        vm.isLoading = false;
         const msg = {
           icon: 'success',
           title: '已刪除此筆資料',
