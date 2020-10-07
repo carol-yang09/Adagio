@@ -58,7 +58,6 @@ import Pagination from '@/components/Pagination.vue';
 
 export default {
   name: 'StoragesManage',
-  props: ['token'],
   data() {
     return {
       isLoading: false,

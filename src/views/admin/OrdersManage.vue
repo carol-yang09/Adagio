@@ -52,7 +52,6 @@ import Pagination from '@/components/Pagination.vue';
 
 export default {
   name: 'OrdersManage',
-  props: ['token'],
   data() {
     return {
       isLoading: false,

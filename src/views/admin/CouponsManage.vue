@@ -141,7 +141,6 @@ import Pagination from '@/components/Pagination.vue';
 
 export default {
   name: 'CouponsManage',
-  props: ['token'],
   data() {
     return {
       isLoading: false,

@@ -190,7 +190,6 @@ import Pagination from '@/components/Pagination.vue';
 
 export default {
   name: 'ProductsManage',
-  props: ['token'],
   data() {
     return {
       isLoading: false,

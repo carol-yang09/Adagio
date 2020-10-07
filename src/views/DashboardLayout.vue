@@ -59,7 +59,7 @@
         </nav>
 
         <main class="col-md-9 col-lg-10 p-4">
-          <router-view :token="token" v-if="checkSuccess"/>
+          <router-view v-if="checkSuccess"/>
         </main>
       </div>
     </div>
