@@ -7,8 +7,7 @@
         <h2 class="banner-title">Adagio</h2>
         <p class="banner-text">
           還在繁忙的都市中尋求寧靜角落嗎？
-        </p>
-        <p class="banner-text">
+          <br>
           放慢您的步調，跟著 Adagio 遠離都市喧囂，找到屬於您的寧靜舒適。
         </p>
       </div>
