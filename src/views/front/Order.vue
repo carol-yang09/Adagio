@@ -1,6 +1,5 @@
 <template>
   <div class="container checkorder">
-    <!-- loading 效果 -->
     <loading :active.sync="isLoading" :is-full-page="true"></loading>
 
     <ul class="step">
@@ -98,7 +97,6 @@
       </div>
     </div>
 
-    <!-- step 3 -->
     <div v-if="step === 3" class="text-center">
       <div class="done">
         <div class="done-img"></div>

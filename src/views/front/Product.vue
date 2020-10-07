@@ -1,6 +1,5 @@
 <template>
   <div class="product">
-    <!-- loading 效果 -->
     <loading :active.sync="isLoading" :is-full-page="true"></loading>
 
     <div class="pagebanner"></div>
@@ -356,8 +355,6 @@ export default {
   text-align: left;
   line-height: 1.75;
 }
-
-// swiper
 
 .swiper-title {
   margin-bottom: 0.5rem;

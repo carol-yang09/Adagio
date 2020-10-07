@@ -1,6 +1,5 @@
 <template>
   <div class="wrap">
-    <!-- loading 效果 -->
     <loading :active.sync="isLoading" :is-full-page="true"></loading>
 
     <div class="banner" id="banner">
@@ -203,8 +202,6 @@ export default {
   background-attachment: fixed;
 }
 
-// banner
-
 .banner {
   position: relative;
   min-height: calc(100vh - 3.5rem);
@@ -276,8 +273,6 @@ export default {
   right: 0rem;
   bottom: 0rem;
 }
-
-// feature
 
 .feature {
   display: flex;
@@ -372,8 +367,6 @@ export default {
   }
 }
 
-// intro
-
 .intro {
   padding: 3rem 0 0;
   background-color: $info;
@@ -448,8 +441,6 @@ export default {
   letter-spacing: 0.25rem;
 }
 
-// cover
-
 .cover {
   padding: 2rem;
   text-align: center;
@@ -463,8 +454,6 @@ export default {
     letter-spacing: 0.25rem;
   }
 }
-
-// map
 
 .map {
   position: relative;

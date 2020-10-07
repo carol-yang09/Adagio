@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- loading 效果 -->
     <loading :active.sync="isLoading" :is-full-page="true"></loading>
 
     <div class="table-responsive">

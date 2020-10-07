@@ -16,12 +16,10 @@ ul {
   list-style: none;
 }
 
-
-// 去除 Chrome input[type="number"] 上下箭頭
+// 去除 input number 預設上下箭頭
 input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
-// 去除 Firefox input[type="number"] 上下箭頭
 input[type="number"]{
   -moz-appearance: textfield;
 }

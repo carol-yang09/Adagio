@@ -1,6 +1,5 @@
 <template>
   <div class="main about">
-    <!-- loading 效果 -->
     <loading :active.sync="isLoading" :is-full-page="true"></loading>
 
     <div class="pagebanner"></div>
@@ -126,8 +125,6 @@ export default {
   }
 }
 
-// brand
-
 .brand {
   margin-bottom: 4rem;
   text-align: center;
@@ -174,8 +171,6 @@ export default {
   background-size: cover;
 
 }
-
-// contact
 
 .contact {
   display: flex;

@@ -1,6 +1,5 @@
 <template>
   <div class="login">
-    <!-- loading 效果 -->
     <loading :active.sync="isLoading" :is-full-page="true"></loading>
 
     <h1 class="logo mb-5 text-white">Adagio</h1>

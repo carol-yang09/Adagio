@@ -2,7 +2,6 @@
   <div>
     <AlertMessage/>
 
-    <!-- loading 效果 -->
     <loading :active.sync="isLoading" :is-full-page="true"></loading>
 
     <nav class="navbar sticky-top navbar-dark bg-dark">
@@ -81,7 +80,6 @@ export default {
     };
   },
   methods: {
-    // 登出
     logout() {
       const vm = this;
       const token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
@@ -108,14 +106,12 @@ export default {
         vm.$router.push('/login');
       });
     },
-    // 確認登入狀態
     checkLogin() {
       const vm = this;
       const url = `${process.env.VUE_APP_APIPATH}/auth/check`;
       vm.token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
       vm.isLoading = true;
 
-      // Axios 預設值
       vm.$http.defaults.headers.common.Authorization = `Bearer ${vm.token}`;
 
       vm.$http.post(url, { api_token: vm.token }).then((res) => {
@@ -126,7 +122,6 @@ export default {
           };
           vm.$bus.$emit('alertmessage', msg);
 
-          // 導入登入頁
           vm.$router.push('/login');
         }
 
