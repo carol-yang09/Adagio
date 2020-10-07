@@ -214,7 +214,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/all';
+@import '@/assets/scss/all';
 
 .breadcrumb-item a {
   color: darken($light, 20%);

@@ -177,7 +177,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/all';
+@import '@/assets/scss/all';
 
 .products {
   min-height: calc(100vh - 3.5rem - 3rem - 15rem);

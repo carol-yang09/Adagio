@@ -140,7 +140,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/all';
+@import '@/assets/scss/all';
 
 .sidebar {
   padding: 1.5rem 0;

@@ -193,7 +193,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/all';
+@import '@/assets/scss/all';
 
 .wrap {
   background: url('../../assets/images/banner.jpg') center 85% no-repeat;
