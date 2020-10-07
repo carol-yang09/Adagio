@@ -44,17 +44,17 @@
             </ul>
             <div class="product-cart">
               <div class="counter">
-                <a href="" class="addNum" @click.prevent="addNum()">
+                <a href="#" class="addNum" @click.prevent="addNum()">
                   <i class="fas fa-plus"></i>
                 </a>
                 <input type="number" min="0" max="10" readonly="readonly" class="counter-input"
                  v-model="num">
-                <a href="" class="lessNum" @click.prevent="lessNum()">
+                <a href="#" class="lessNum" @click.prevent="lessNum()">
                   <i class="fas fa-minus"></i>
                 </a>
               </div>
 
-              <a href="" class="btn btn-dark" @click.prevent="updateCartItem(product.id)">
+              <a href="#" class="btn btn-dark" @click.prevent="updateCartItem(product.id)">
                 <span class="mr-1">
                   <i class="fas fa-shopping-basket"></i>
                 </span>

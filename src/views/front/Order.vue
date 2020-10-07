@@ -89,7 +89,7 @@
       </div>
 
       <div class="text-center" v-if="!order.paid">
-        <a href="" class="btn btn-dark btn-lg" @click.prevent="payOrder(orderId)">
+        <a href="#" class="btn btn-dark btn-lg" @click.prevent="payOrder(orderId)">
           付款去
           <span class="ml-1">
             <i class="fas fa-money-check-alt"></i>

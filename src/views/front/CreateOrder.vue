@@ -46,7 +46,7 @@
               {{ cart.product.price | currency }}
             </td>
             <td class="align-middle text-center">
-              <a href="" class="text-danger" @click.prevent="openDelModal(cart.product.id)">
+              <a href="#" class="text-danger" @click.prevent="openDelModal(cart.product.id)">
                 <i class="far fa-trash-alt"></i>
               </a>
             </td>

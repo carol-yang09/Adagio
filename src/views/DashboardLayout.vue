@@ -8,7 +8,7 @@
     <nav class="navbar sticky-top navbar-dark bg-dark">
       <router-link to="/" class="navbar-brand logo">Adagio</router-link>
       <div class="navbar-nav ml-auto d-none d-md-flex">
-        <a href="" class="nav-link" @click.prevent="logout()">登出</a>
+        <a href="#" class="nav-link" @click.prevent="logout()">登出</a>
       </div>
       <button class="navbar-toggler d-md-none" type="button" data-toggle="collapse"
        data-target="#sidebar" aria-controls="sidebar"

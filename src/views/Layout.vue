@@ -6,7 +6,7 @@
     <loading :active.sync="isLoading" :is-full-page="true"></loading>
 
     <div class="header">
-      <a href="" class="menu-toggle " @click.prevent="isMenuOpen = !isMenuOpen">Menu</a>
+      <a href="#" class="menu-toggle " @click.prevent="isMenuOpen = !isMenuOpen">Menu</a>
 
       <ul class="menu-collapse" :class="{'active': isMenuOpen}">
         <li>
@@ -24,7 +24,7 @@
 
       <ul class="header-list">
         <li class="dropdown">
-          <a href="" class="header-link cart" role="button" data-toggle="dropdown">
+          <a href="#" class="header-link cart" role="button" data-toggle="dropdown">
             <i class="fas fa-shopping-bag fa-lg"></i>
             <span class="cart-num">( {{ cartsNum }} )</span>
           </a>
@@ -34,7 +34,7 @@
               <tbody>
                 <tr v-for="cart in carts" :key="cart.id">
                   <td>
-                    <a href="" class="text-danger" @click.prevent="openDelModal(cart.product.id)">
+                    <a href="#" class="text-danger" @click.prevent="openDelModal(cart.product.id)">
                       <i class="far fa-trash-alt"></i>
                     </a>
                   </td>

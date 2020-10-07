@@ -9,7 +9,7 @@
       <ul class="categories">
         <li class="categories-item" v-for="category in categories" :key="category.icon"
          :class="{'active': category.title === filterCategory}">
-          <a href="" @click.prevent="filterCategory = category.title">
+          <a href="#" @click.prevent="filterCategory = category.title">
             <span class="mr-1">
               <i :class="category.icon"></i>
             </span>
@@ -36,7 +36,7 @@
                 <li class="price">特價： {{ product.price | currency }}</li>
               </ul>
               <div class="card-btngroup">
-                <a href="" class="btn btn-outline-dark btn-sm"
+                <a href="#" class="btn btn-outline-dark btn-sm"
                  @click.prevent="updateCartItem(product.id, 1)">
                   <span class="mr-1">
                     <i class="fas fa-shopping-basket"></i>
