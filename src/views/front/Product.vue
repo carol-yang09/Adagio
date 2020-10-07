@@ -43,7 +43,7 @@
             </ul>
             <div class="product-cart">
               <div class="counter">
-                <a href="#" class="addNum" @click.prevent="addNum()">
+                <a href="#" class="addNum" @click.prevent="num += 1">
                   <i class="fas fa-plus"></i>
                 </a>
                 <input type="number" min="0" max="10" readonly="readonly" class="counter-input"
@@ -125,9 +125,6 @@ export default {
     };
   },
   methods: {
-    addNum() {
-      this.num += 1;
-    },
     lessNum() {
       if (this.num > 2) {
         this.num -= 1;
