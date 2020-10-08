@@ -1,6 +1,5 @@
 <template>
   <div class="container checkorder">
-    <!-- loading 效果 -->
     <loading :active.sync="isLoading" :is-full-page="true"></loading>
 
     <ul class="step">
@@ -12,7 +11,6 @@
       <li class="step-item" :class="{'active': step === 3, 'step-active': step === 3 }">完成</li>
     </ul>
 
-    <!-- step 1 -->
     <div v-if="step === 1">
       <h2 class="checkorder-title">購物車</h2>
       <table class="table mb-4">
@@ -46,7 +44,7 @@
               {{ cart.product.price | currency }}
             </td>
             <td class="align-middle text-center">
-              <a href="" class="text-danger" @click.prevent="openDelModal(cart.product.id)">
+              <a href="#" class="text-danger" @click.prevent="openDelModal(cart.product.id)">
                 <i class="far fa-trash-alt"></i>
               </a>
             </td>
@@ -251,6 +249,7 @@ export default {
           icon: 'success',
           title: '已刪除此筆資料',
         };
+        vm.isLoading = false;
         vm.$bus.$emit('alertmessage', msg);
 
         vm.$emit('get-carts');
@@ -342,7 +341,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/all';
+@import '@/assets/scss/all';
 
 .thumbnail {
   display: inline-block;

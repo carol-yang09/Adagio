@@ -16,7 +16,6 @@ import 'aos/dist/aos.css';
 
 import App from './App.vue';
 import router from './router';
-import store from './store';
 import './bus';
 import currencyFilter from './filters/currency';
 
@@ -56,10 +55,10 @@ AOS.init();
 
 // 引入 filter
 Vue.filter('currency', currencyFilter);
+
 Vue.config.productionTip = false;
 
 new Vue({
   router,
-  store,
   render: (h) => h(App),
 }).$mount('#app');

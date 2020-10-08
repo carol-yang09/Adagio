@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- loading 效果 -->
     <loading :active.sync="isLoading" :is-full-page="true"></loading>
 
     <div class="mb-4 text-right">
@@ -191,7 +190,6 @@ import Pagination from '@/components/Pagination.vue';
 
 export default {
   name: 'ProductsManage',
-  props: ['token'],
   data() {
     return {
       isLoading: false,
@@ -222,7 +220,7 @@ export default {
       const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/admin/ec/product/${id}`;
       vm.isLoading = true;
       vm.$http.get(url).then((res) => {
-        this.tempProduct = res.data.data;
+        vm.tempProduct = res.data.data;
         $('#editModal').modal('show');
         vm.isLoading = false;
       }).catch(() => {
@@ -271,7 +269,8 @@ export default {
         status = '更新';
       }
       vm.isLoading = true;
-      vm.$http[method](url, this.tempProduct).then(() => {
+      vm.$http[method](url, vm.tempProduct).then(() => {
+        vm.isLoading = false;
         vm.getProducts();
         $('#editModal').modal('hide');
         const msg = {
@@ -294,6 +293,7 @@ export default {
       const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/admin/ec/product/${vm.tempProduct.id}`;
       vm.isLoading = true;
       vm.$http.delete(url).then(() => {
+        vm.isLoading = false;
         vm.getProducts();
         $('#delModal').modal('hide');
         const msg = {
@@ -318,7 +318,7 @@ export default {
       formData.append('file', file);
       vm.isLoading = true;
       const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/admin/storage`;
-      this.$http.post(url, formData, {
+      vm.$http.post(url, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -356,7 +356,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/all';
+@import '@/assets/scss/all';
 
 .thumbnail {
   display: inline-block;

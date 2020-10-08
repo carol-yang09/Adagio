@@ -1,6 +1,5 @@
 <template>
   <div class="product">
-    <!-- loading 效果 -->
     <loading :active.sync="isLoading" :is-full-page="true"></loading>
 
     <div class="pagebanner"></div>
@@ -44,17 +43,17 @@
             </ul>
             <div class="product-cart">
               <div class="counter">
-                <a href="" class="addNum" @click.prevent="addNum()">
+                <a href="#" class="addNum" @click.prevent="num += 1">
                   <i class="fas fa-plus"></i>
                 </a>
                 <input type="number" min="0" max="10" readonly="readonly" class="counter-input"
                  v-model="num">
-                <a href="" class="lessNum" @click.prevent="lessNum()">
+                <a href="#" class="lessNum" @click.prevent="lessNum()">
                   <i class="fas fa-minus"></i>
                 </a>
               </div>
 
-              <a href="" class="btn btn-dark" @click.prevent="updateCartItem(product.id)">
+              <a href="#" class="btn btn-dark" @click.prevent="updateCartItem(product.id)">
                 <span class="mr-1">
                   <i class="fas fa-shopping-basket"></i>
                 </span>
@@ -126,9 +125,6 @@ export default {
     };
   },
   methods: {
-    addNum() {
-      this.num += 1;
-    },
     lessNum() {
       if (this.num > 2) {
         this.num -= 1;
@@ -141,8 +137,8 @@ export default {
       const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/products`;
       vm.isLoading = true;
       vm.$http.get(url).then((res) => {
-        this.relatedProducts = res.data.data.filter((item) => item.category === category
-        && item.id !== this.product.id);
+        vm.relatedProducts = res.data.data.filter((item) => item.category === category
+        && item.id !== vm.product.id);
 
         vm.isLoading = false;
       });
@@ -153,6 +149,7 @@ export default {
       vm.isLoading = true;
       vm.$http.get(url).then((res) => {
         vm.product = res.data.data;
+        vm.isLoading = false;
         vm.getRelated(vm.product.category);
       });
     },
@@ -171,13 +168,13 @@ export default {
       let n = 0;
       let method = 'post';
 
-      n = Number(this.num);
+      n = Number(vm.num);
 
       const isInCart = vm.carts.filter((item) => item.product.id === id);
 
       if (isInCart.length > 0) {
         method = 'patch';
-        n = Number(isInCart[0].quantity) + Number(this.num);
+        n = Number(isInCart[0].quantity) + Number(vm.num);
       }
 
       const data = {
@@ -186,6 +183,7 @@ export default {
       };
       vm.isLoading = true;
       vm.$http[method](url, data).then(() => {
+        vm.isLoading = false;
         vm.getCarts();
         vm.$emit('get-carts');
 
@@ -218,7 +216,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/all';
+@import '@/assets/scss/all';
 
 .breadcrumb-item a {
   color: darken($light, 20%);
@@ -356,8 +354,6 @@ export default {
   text-align: left;
   line-height: 1.75;
 }
-
-// swiper
 
 .swiper-title {
   margin-bottom: 0.5rem;

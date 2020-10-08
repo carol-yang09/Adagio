@@ -1,6 +1,5 @@
 <template>
   <div class="container-fluid">
-    <!-- loading 效果 -->
     <loading :active.sync="isLoading" :is-full-page="true"></loading>
 
     <div class="row">
@@ -59,7 +58,6 @@ import Pagination from '@/components/Pagination.vue';
 
 export default {
   name: 'StoragesManage',
-  props: ['token'],
   data() {
     return {
       isLoading: false,
@@ -84,6 +82,7 @@ export default {
       const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/admin/storage/${vm.tempStorage.id}`;
       vm.isLoading = true;
       vm.$http.delete(url).then(() => {
+        vm.isLoading = false;
         vm.getStorages();
         const msg = {
           icon: 'success',
@@ -115,7 +114,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/all';
+@import '@/assets/scss/all';
 
 .card-img {
   max-width: 100%;

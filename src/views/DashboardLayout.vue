@@ -2,13 +2,12 @@
   <div>
     <AlertMessage/>
 
-    <!-- loading 效果 -->
     <loading :active.sync="isLoading" :is-full-page="true"></loading>
 
     <nav class="navbar sticky-top navbar-dark bg-dark">
       <router-link to="/" class="navbar-brand logo">Adagio</router-link>
       <div class="navbar-nav ml-auto d-none d-md-flex">
-        <a href="" class="nav-link" @click.prevent="logout()">登出</a>
+        <a href="#" class="nav-link" @click.prevent="logout()">登出</a>
       </div>
       <button class="navbar-toggler d-md-none" type="button" data-toggle="collapse"
        data-target="#sidebar" aria-controls="sidebar"
@@ -60,7 +59,7 @@
         </nav>
 
         <main class="col-md-9 col-lg-10 p-4">
-          <router-view :token="token" v-if="checkSuccess"/>
+          <router-view v-if="checkSuccess"/>
         </main>
       </div>
     </div>
@@ -81,7 +80,6 @@ export default {
     };
   },
   methods: {
-    // 登出
     logout() {
       const vm = this;
       const token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
@@ -108,14 +106,12 @@ export default {
         vm.$router.push('/login');
       });
     },
-    // 確認登入狀態
     checkLogin() {
       const vm = this;
       const url = `${process.env.VUE_APP_APIPATH}/auth/check`;
       vm.token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
       vm.isLoading = true;
 
-      // Axios 預設值
       vm.$http.defaults.headers.common.Authorization = `Bearer ${vm.token}`;
 
       vm.$http.post(url, { api_token: vm.token }).then((res) => {
@@ -126,7 +122,6 @@ export default {
           };
           vm.$bus.$emit('alertmessage', msg);
 
-          // 導入登入頁
           vm.$router.push('/login');
         }
 
@@ -145,7 +140,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/all';
+@import '@/assets/scss/all';
 
 .sidebar {
   padding: 1.5rem 0;

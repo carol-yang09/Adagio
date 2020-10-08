@@ -1,6 +1,5 @@
 <template>
   <div class="main about">
-    <!-- loading 效果 -->
     <loading :active.sync="isLoading" :is-full-page="true"></loading>
 
     <div class="pagebanner"></div>
@@ -115,7 +114,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/all';
+@import '@/assets/scss/all';
 
 .pagebanner {
   min-height: 15rem;
@@ -125,8 +124,6 @@ export default {
     min-height: 20rem;
   }
 }
-
-// brand
 
 .brand {
   margin-bottom: 4rem;
@@ -174,8 +171,6 @@ export default {
   background-size: cover;
 
 }
-
-// contact
 
 .contact {
   display: flex;

@@ -4,39 +4,14 @@ $font-logo: 'Kaushan Script', cursive;
 @import "./helpers/variables";
 @import "~bootstrap/scss/mixins";
 @import "~bootstrap/scss/bootstrap";
+
 @import "./_breakpoint";
-
-a {
-  display: inline-block;
-}
-
-ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-
-// 去除 Chrome input[type="number"] 上下箭頭
-input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-}
-// 去除 Firefox input[type="number"] 上下箭頭
-input[type="number"]{
-  -moz-appearance: textfield;
-}
+@import "./_reset";
 
 .logo {
   font-family: $font-logo;
   color: $white;
   font-size: 1.5rem;
-}
-
-// swiper pagination 設定
-
-.swiper-container{
-  --swiper-theme-color: $dark;
-  --swiper-navigation-size: 1.5rem;
 }
 
 // checkorder order 頁面
@@ -119,4 +94,11 @@ input[type="number"]{
   padding-bottom: 0.5rem;
   border-bottom: 4px solid $dark;
   font-size: 1.5rem;
+}
+
+// swiper pagination 設定
+
+.swiper-container{
+  --swiper-theme-color: $dark;
+  --swiper-navigation-size: 1.5rem;
 }

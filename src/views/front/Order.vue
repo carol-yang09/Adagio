@@ -1,6 +1,5 @@
 <template>
   <div class="container checkorder">
-    <!-- loading 效果 -->
     <loading :active.sync="isLoading" :is-full-page="true"></loading>
 
     <ul class="step">
@@ -89,7 +88,7 @@
       </div>
 
       <div class="text-center" v-if="!order.paid">
-        <a href="" class="btn btn-dark btn-lg" @click.prevent="payOrder(orderId)">
+        <a href="#" class="btn btn-dark btn-lg" @click.prevent="payOrder(orderId)">
           付款去
           <span class="ml-1">
             <i class="fas fa-money-check-alt"></i>
@@ -98,7 +97,6 @@
       </div>
     </div>
 
-    <!-- step 3 -->
     <div v-if="step === 3" class="text-center">
       <div class="done">
         <div class="done-img"></div>
@@ -192,7 +190,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/all';
+@import '@/assets/scss/all';
 
 .done {
   display: inline-block;

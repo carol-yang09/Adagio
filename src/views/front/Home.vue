@@ -1,6 +1,5 @@
 <template>
   <div class="wrap">
-    <!-- loading 效果 -->
     <loading :active.sync="isLoading" :is-full-page="true"></loading>
 
     <div class="banner" id="banner">
@@ -8,8 +7,7 @@
         <h2 class="banner-title">Adagio</h2>
         <p class="banner-text">
           還在繁忙的都市中尋求寧靜角落嗎？
-        </p>
-        <p class="banner-text">
+          <br>
           放慢您的步調，跟著 Adagio 遠離都市喧囂，找到屬於您的寧靜舒適。
         </p>
       </div>
@@ -195,15 +193,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/all';
+@import '@/assets/scss/all';
 
 .wrap {
   background: url('../../assets/images/banner.jpg') center 85% no-repeat;
   background-size: cover;
   background-attachment: fixed;
 }
-
-// banner
 
 .banner {
   position: relative;
@@ -276,8 +272,6 @@ export default {
   right: 0rem;
   bottom: 0rem;
 }
-
-// feature
 
 .feature {
   display: flex;
@@ -372,8 +366,6 @@ export default {
   }
 }
 
-// intro
-
 .intro {
   padding: 3rem 0 0;
   background-color: $info;
@@ -448,8 +440,6 @@ export default {
   letter-spacing: 0.25rem;
 }
 
-// cover
-
 .cover {
   padding: 2rem;
   text-align: center;
@@ -463,8 +453,6 @@ export default {
     letter-spacing: 0.25rem;
   }
 }
-
-// map
 
 .map {
   position: relative;

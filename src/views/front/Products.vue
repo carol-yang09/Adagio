@@ -1,6 +1,5 @@
 <template>
   <div class="products">
-    <!-- loading 效果 -->
     <loading :active.sync="isLoading" :is-full-page="true"></loading>
 
     <div class="pagebanner"></div>
@@ -9,7 +8,7 @@
       <ul class="categories">
         <li class="categories-item" v-for="category in categories" :key="category.icon"
          :class="{'active': category.title === filterCategory}">
-          <a href="" @click.prevent="filterCategory = category.title">
+          <a href="#" @click.prevent="filterCategory = category.title">
             <span class="mr-1">
               <i :class="category.icon"></i>
             </span>
@@ -36,7 +35,7 @@
                 <li class="price">特價： {{ product.price | currency }}</li>
               </ul>
               <div class="card-btngroup">
-                <a href="" class="btn btn-outline-dark btn-sm"
+                <a href="#" class="btn btn-outline-dark btn-sm"
                  @click.prevent="updateCartItem(product.id, 1)">
                   <span class="mr-1">
                     <i class="fas fa-shopping-basket"></i>
@@ -135,6 +134,7 @@ export default {
       };
       vm.isLoading = true;
       vm.$http[method](url, data).then(() => {
+        vm.isLoading = false;
         vm.getCarts();
         vm.$emit('get-carts');
 
@@ -178,7 +178,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/all';
+@import '@/assets/scss/all';
 
 .products {
   min-height: calc(100vh - 3.5rem - 3rem - 15rem);

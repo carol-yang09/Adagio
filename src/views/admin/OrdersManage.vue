@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- loading 效果 -->
     <loading :active.sync="isLoading" :is-full-page="true"></loading>
 
     <div class="table-responsive">
@@ -53,7 +52,6 @@ import Pagination from '@/components/Pagination.vue';
 
 export default {
   name: 'OrdersManage',
-  props: ['token'],
   data() {
     return {
       isLoading: false,
@@ -81,6 +79,7 @@ export default {
       }
       vm.isLoading = true;
       vm.$http.patch(url, item.id).then(() => {
+        vm.isLoading = false;
         vm.getOrders();
         const msg = {
           icon: 'success',
@@ -107,5 +106,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/all';
+@import '@/assets/scss/all';
 </style>

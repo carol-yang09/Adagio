@@ -2,11 +2,10 @@
   <div>
     <AlertMessage/>
 
-    <!-- loading 效果 -->
     <loading :active.sync="isLoading" :is-full-page="true"></loading>
 
     <div class="header">
-      <a href="" class="menu-toggle " @click.prevent="isMenuOpen = !isMenuOpen">Menu</a>
+      <a href="#" class="menu-toggle " @click.prevent="isMenuOpen = !isMenuOpen">Menu</a>
 
       <ul class="menu-collapse" :class="{'active': isMenuOpen}">
         <li>
@@ -24,7 +23,7 @@
 
       <ul class="header-list">
         <li class="dropdown">
-          <a href="" class="header-link cart" role="button" data-toggle="dropdown">
+          <a href="#" class="header-link cart" role="button" data-toggle="dropdown">
             <i class="fas fa-shopping-bag fa-lg"></i>
             <span class="cart-num">( {{ cartsNum }} )</span>
           </a>
@@ -34,7 +33,7 @@
               <tbody>
                 <tr v-for="cart in carts" :key="cart.id">
                   <td>
-                    <a href="" class="text-danger" @click.prevent="openDelModal(cart.product.id)">
+                    <a href="#" class="text-danger" @click.prevent="openDelModal(cart.product.id)">
                       <i class="far fa-trash-alt"></i>
                     </a>
                   </td>
@@ -122,6 +121,7 @@ export default {
       const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/shopping/${id}`;
       vm.isLoading = true;
       vm.$http.delete(url, { product: id }).then(() => {
+        vm.isLoading = false;
         const msg = {
           icon: 'success',
           title: '已刪除此筆資料',
@@ -131,8 +131,8 @@ export default {
         vm.getCarts();
 
         // 若在 checkorder 頁則重整內頁購物車
-        if (this.$refs.view.$route.name === 'CreateOrder') {
-          this.$refs.view.getCarts();
+        if (vm.$refs.view.$route.name === 'CreateOrder') {
+          vm.$refs.view.getCarts();
         }
       }).catch(() => {
         const msg = {
@@ -156,7 +156,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/all';
+@import '@/assets/scss/all';
 
 .header {
   display: flex;

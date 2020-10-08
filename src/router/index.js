@@ -8,10 +8,8 @@ const routes = [
     path: '*',
     redirect: '/',
   },
-  // 前台
   {
     path: '/',
-    // name: 'Layout',
     component: () => import('../views/Layout.vue'),
     children: [
       {
@@ -46,7 +44,6 @@ const routes = [
       },
     ],
   },
-  // 登入頁面
   {
     path: '/login',
     name: 'Login',
@@ -54,7 +51,6 @@ const routes = [
   },
   {
     path: '/admin',
-    // name: 'Dashboard',
     component: () => import('../views/DashboardLayout.vue'),
     children: [
       {
