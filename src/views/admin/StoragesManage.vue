@@ -36,7 +36,7 @@
             確定要刪除該筆資料 (刪除後無法復原)
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
+            <button type="button" class="btn btn-outline-dark" data-dismiss="modal">
               取消
             </button>
             <button type="button" class="btn btn-outline-danger"
@@ -119,8 +119,8 @@ export default {
 .card-img {
   max-width: 100%;
   height: 12rem;
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  background-size: contain;
 }
 </style>

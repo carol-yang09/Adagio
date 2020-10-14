@@ -35,7 +35,7 @@
                  :id="item.id" v-model="item.paid" @change.prevent="setOrderPaid(item)">
                 <label class="custom-control-label" :for="item.id"></label>
                 <span class="text-success" v-if="item.paid">已付款</span>
-                <span class="text-secondary" v-else>未付款</span>
+                <span class="text-muted" v-else>未付款</span>
               </div>
             </td>
           </tr>
