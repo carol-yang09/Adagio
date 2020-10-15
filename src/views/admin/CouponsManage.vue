@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- loading 效果 -->
     <loading :active.sync="isLoading" :is-full-page="true"></loading>
 
     <div class="mb-4 text-right">
@@ -95,7 +94,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-muted" data-dismiss="modal">取消</button>
             <button type="submit" class="btn btn-dark" @click.prevent="updateCoupon()">
               確認
             </button>
@@ -119,7 +118,7 @@
             確定要刪除該筆優惠劵 (刪除後無法復原)
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
+            <button type="button" class="btn btn-outline-dark" data-dismiss="modal">
               取消
             </button>
             <button type="button" class="btn btn-outline-danger"
@@ -142,7 +141,6 @@ import Pagination from '@/components/Pagination.vue';
 
 export default {
   name: 'CouponsManage',
-  props: ['token'],
   data() {
     return {
       isLoading: false,
@@ -210,7 +208,8 @@ export default {
         url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/admin/ec/coupon/${vm.tempCoupon.id}`;
       }
       vm.isLoading = true;
-      vm.$http[method](url, this.tempCoupon).then(() => {
+      vm.$http[method](url, vm.tempCoupon).then(() => {
+        vm.isLoading = false;
         vm.getCoupons();
         const msg = {
           icon: 'success',
@@ -232,6 +231,7 @@ export default {
       const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/admin/ec/coupon/${vm.tempCoupon.id}`;
       vm.isLoading = true;
       vm.$http.delete(url).then(() => {
+        vm.isLoading = false;
         vm.getCoupons();
         const msg = {
           icon: 'success',
@@ -259,5 +259,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/all';
+@import '@/assets/scss/all';
 </style>
