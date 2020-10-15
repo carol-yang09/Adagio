@@ -94,7 +94,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-muted" data-dismiss="modal">取消</button>
             <button type="submit" class="btn btn-dark" @click.prevent="updateCoupon()">
               確認
             </button>
@@ -118,7 +118,7 @@
             確定要刪除該筆優惠劵 (刪除後無法復原)
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
+            <button type="button" class="btn btn-outline-dark" data-dismiss="modal">
               取消
             </button>
             <button type="button" class="btn btn-outline-danger"

@@ -1,15 +1,19 @@
 <template>
-  <div class="wrap">
+  <div class="home">
     <loading :active.sync="isLoading" :is-full-page="true"></loading>
 
     <div class="banner" id="banner">
       <div class="banner-content">
         <h2 class="banner-title">Adagio</h2>
         <p class="banner-text">
-          還在繁忙的都市中尋求寧靜角落嗎？
-          <br>
-          放慢您的步調，跟著 Adagio 遠離都市喧囂，找到屬於您的寧靜舒適。
+          放慢您的步調，跟著 Adagio 遠離都市喧囂，來場療癒的美食饗宴吧。
         </p>
+        <router-link to="/products" class="btn btn-secondary btn-lg border">
+          立即選購
+          <span class="ml-3">
+            <i class="fas fa-store fa-lg"></i>
+          </span>
+        </router-link>
       </div>
       <div class="banner-rect"></div>
       <a class="banner-scroll" href="#banner" @click.prevent="scrollDown()">
@@ -18,7 +22,7 @@
     </div>
 
     <div class="feature">
-      <div class="feature-info">
+      <div class="feature-info" data-aos="zoom-in" data-aos-duration="1000">
         <h2 class="feature-title">
           嚴選食材
         </h2>
@@ -28,51 +32,41 @@
         </p>
       </div>
       <ul class="feature-img">
-        <li class="feature-img1" data-aos="zoom-in" data-aos-duration="3000"></li>
-        <li class="feature-img2" data-aos="zoom-in" data-aos-duration="3000"></li>
+        <li class="feature-img1"></li>
+        <li class="feature-img2"></li>
       </ul>
     </div>
 
     <div class="intro">
-      <div class="container">
-        <div class="row">
-          <div class="col-12 col-lg-4 mb-5 mb-lg-0">
-            <div class="intro-item intro-img1">
-              <router-link class="intro-content"
-                :to="{ name: 'Products', query: { categoryName: '主餐' }}">
-                <h4 class="intro-title">精選主餐</h4>
-                <p class="intro-text">精心製作的餐點，給您充滿視覺與味覺的美食饗宴</p>
-              </router-link>
-            </div>
-          </div>
-          <div class="col-12 col-lg-4 mb-5 mb-lg-0">
-            <div class="intro-item intro-img2">
-              <router-link class="intro-content"
-               :to="{ name: 'Products', query: { categoryName: '甜點' }}">
-                <h4 class="intro-title">必吃甜點</h4>
-                <p class="intro-text">精緻夢幻甜點，是不容錯過的經典好味道。</p>
-              </router-link>
-            </div>
-          </div>
-          <div class="col-12 col-lg-4 mb-5 mb-lg-0">
-            <div class="intro-item intro-img3">
-              <router-link class="intro-content"
-               :to="{ name: 'Products', query: { categoryName: '飲品' }}">
-                <h4 class="intro-title">特調飲品</h4>
-                <p class="intro-text">獨家研發的特調黃金比例，值得您來細細品嚐。</p>
-              </router-link>
-            </div>
-          </div>
-        </div>
+      <div class="intro-item intro-img1">
+        <router-link class="intro-content"
+          :to="{ name: 'Products', query: { categoryName: '主餐' }}">
+          <h4 class="intro-title">精選主餐</h4>
+          <p class="intro-text">精心製作的餐點，給您充滿視覺與味覺的美食饗宴</p>
+        </router-link>
+      </div>
+      <div class="intro-item intro-img2">
+        <router-link class="intro-content"
+          :to="{ name: 'Products', query: { categoryName: '甜點' }}">
+          <h4 class="intro-title">必吃甜點</h4>
+          <p class="intro-text">精緻夢幻甜點，是不容錯過的經典好味道。</p>
+        </router-link>
+      </div>
+      <div class="intro-item intro-img3">
+        <router-link class="intro-content"
+          :to="{ name: 'Products', query: { categoryName: '飲品' }}">
+          <h4 class="intro-title">特調飲品</h4>
+          <p class="intro-text">獨家研發的特調黃金比例，值得您來細細品嚐。</p>
+        </router-link>
       </div>
     </div>
 
     <div class="feature">
       <ul class="feature-img">
-        <li class="feature-img3" data-aos="zoom-in" data-aos-duration="3000"></li>
-        <li class="feature-img4" data-aos="zoom-in" data-aos-duration="3000"></li>
+        <li class="feature-img3"></li>
+        <li class="feature-img4"></li>
       </ul>
-      <div class="feature-info">
+      <div class="feature-info" data-aos="zoom-in" data-aos-duration="1000">
         <h2 class="feature-title">
           舒適環境
         </h2>
@@ -89,7 +83,7 @@
     </div>
 
     <div class="feature">
-      <div class="feature-info">
+      <div class="feature-info" data-aos="zoom-in" data-aos-duration="1000">
         <h2 class="feature-title">
           顧客回饋
         </h2>
@@ -98,7 +92,7 @@
           我們會更努力用心做到最完美，來回饋大家的支持及愛護。
         </p>
       </div>
-      <div class="feature-swiper bg-info">
+      <div class="feature-swiper">
         <swiper class="swiper" :options="swiperOption">
           <swiper-slide v-for="feedback in feedbacks" :key="feedback.name">
             <div class="swiper-item">
@@ -195,37 +189,37 @@ export default {
 <style lang="scss" scoped>
 @import '@/assets/scss/all';
 
-.wrap {
+.home {
   background: url('../../assets/images/banner.jpg') center 85% no-repeat;
   background-size: cover;
   background-attachment: fixed;
 }
 
 .banner {
-  position: relative;
-  min-height: calc(100vh - 3.5rem);
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+  min-height: 100vh;
 }
 
 .banner-content {
   max-width: 500px;
   padding: 2rem;
   background-color: rgba($dark, 0.4);
-  text-align: center;
   border-radius: 0.25rem;
+  text-align: center;
   color: $white;
   z-index: 99;
   @include mobile {
-    padding: 2rem 3rem;
+    padding: 2rem 3rem 3rem;
   }
 }
 
 .banner-title {
   margin-bottom: 4rem;
-  animation: floating 3s infinite;
   font-family: $font-logo;
+  animation: floating 3s infinite;
   font-size: 3rem;
   font-weight: bold;
   @include mobile {
@@ -247,7 +241,7 @@ export default {
 }
 
 .banner-text {
-  margin-bottom: 0;
+  margin-bottom: 2rem;
   font-size: 1rem;
   line-height: 1.75;
   @include mobile {
@@ -264,23 +258,25 @@ export default {
   border-style: solid;
   border-width: 0 0 10rem 20rem;
   border-color: transparent transparent $white transparent;
+  z-index: 100;
 }
 
 .banner-scroll {
-  max-width: 10rem;
   position: absolute;
   right: 0rem;
   bottom: 0rem;
+  max-width: 10rem;
+  z-index: 101;
 }
 
 .feature {
   display: flex;
   flex-direction: column;
-  background-color: $white;
   padding: 2rem 1rem;
+  background-color: $white;
   text-align: center;
   @include mobile {
-    padding: 4rem 3rem;
+    padding: 5rem 3rem;
   }
   @include pad {
     flex-direction: row;
@@ -328,9 +324,9 @@ export default {
 
 .feature-title {
   display: inline-block;
-  border-bottom: 2px solid $dark;
-  padding-bottom: 0.5rem;
   margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid $dark;
   font-size: 1.75rem;
 }
 
@@ -343,8 +339,9 @@ export default {
 
 .feature-swiper {
   width: 100%;
-  margin: 2rem 0;
   padding: 0 1rem;
+  background-color: $info;
+  border-radius: 0.25rem;
   @include pad {
     width: 50%;
   }
@@ -367,22 +364,27 @@ export default {
 }
 
 .intro {
-  padding: 3rem 0 0;
-  background-color: $info;
-  @include mobile {
-    padding: 4rem 0;
+  background-color: $white;
+  overflow: hidden;
+  @include pad {
+    display: flex;
+    background-color: transparent;
   }
 }
 
 .intro-item {
   position: relative;
-  height: 100%;
-  min-height: 20rem;
+  min-height: 25rem;
+  margin-bottom: 0.5rem;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  border-radius: 0.25rem;
+  transition: all 0.5s ease;
   text-align: center;
+  @include pad {
+    flex: 0 0 33.33333%;
+    margin-bottom: 0;
+  }
   &:before {
     content: "";
     display: block;
@@ -391,15 +393,17 @@ export default {
     bottom: 0;
     right: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba($dark, 0.4);
-    transition: all 0.5s ease;
-    border-radius: 0.25rem;
-    z-index: 1;
-  }
-  &:hover:before {
     background: rgba($dark, 0.8);
+    transition: all 0.5s ease;
+  }
+  &:hover, &:focus {
+    transform: scale(1.05);
+    &:before {
+      background: transparent;
+    }
+    .intro-content {
+      opacity: 0;
+    }
   }
 }
 
@@ -416,15 +420,20 @@ export default {
 }
 
 .intro-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   position: absolute;
   top: 0;
   bottom: 0;
   right: 0;
   left: 0;
-  padding: 5rem;
-  z-index: 2;
+  margin: 1rem;
+  border: 1px solid $white;
+  transition: all 0.5s ease;
+  color: $white;
   &:hover {
-    color: $white;
     text-decoration: none;
   }
 }
@@ -436,6 +445,7 @@ export default {
 }
 
 .intro-text {
+  max-width: 18rem;
   line-height: 1.75;
   letter-spacing: 0.25rem;
 }
@@ -469,7 +479,7 @@ export default {
   top: 1rem;
   right: 1rem;
   padding: 2rem 3rem;
-  background-color: $secondary;
+  background-color: $dark;
   border-radius: 0.25rem;
   text-align: center;
   color: $white;

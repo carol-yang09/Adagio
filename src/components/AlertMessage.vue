@@ -26,9 +26,11 @@ export default {
       vm.$swal({
         title: msg.title,
         text: msg.text,
-        icon: msg.icon,
         confirmButtonColor: '#343a40',
         confirmButtonText: '確認',
+        customClass: {
+          title: `swal-title swal-title-${msg.status}`,
+        },
       });
     },
   },
@@ -46,5 +48,45 @@ export default {
 };
 </script>
 
-<style scope>
+<style lang="scss">
+@import '@/assets/scss/all';
+
+// 更改 vue-sweetalert2 預設樣式
+
+.swal2-toast {
+  min-width: 15rem;
+}
+
+.swal2-modal {
+  padding: 2rem;
+}
+
+// 自訂 vue-sweetalert2 樣式
+
+.swal-title {
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  font-size: 1.5rem;
+  border-bottom: 4px solid $dark;
+}
+
+.swal-title-secondary {
+  border-bottom: 4px solid $secondary;
+}
+
+.swal-title-success {
+  border-bottom: 4px solid $success;
+}
+
+.swal-title-info {
+  border-bottom: 4px solid $info;
+}
+
+.swal-title-danger {
+  border-bottom: 4px solid $danger;
+}
+
+.swal-success {
+  background-color: $success;
+}
 </style>

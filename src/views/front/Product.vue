@@ -2,11 +2,13 @@
   <div class="product">
     <loading :active.sync="isLoading" :is-full-page="true"></loading>
 
-    <div class="pagebanner"></div>
+    <div class="pagebanner" :style="{backgroundImage: 'url(' + bannerImg + ')'}">
+      <h2>{{ product.category }}</h2>
+    </div>
 
     <div class="container">
       <nav aria-label="breadcrumb" class="mb-4">
-        <ol class="breadcrumb">
+        <ol class="breadcrumb py-3">
           <li class="breadcrumb-item">
             <router-link to="/">
               首頁
@@ -27,6 +29,17 @@
         <div class="col-12 col-md-6  mb-4 mb-md-0">
           <div class="cover" v-if="product.imageUrl">
             <div class="cover-img" :style="{backgroundImage: 'url(' + product.imageUrl[0] + ')'}">
+              <a href="#" class="favorite-icon favorite-icon-lg"
+               @click.prevent="delFavoriteItem(product)"
+                v-show="isFavorite">
+                <i class="fas fa-heart"></i>
+
+              </a>
+              <a href="#" class="favorite-icon favorite-icon-lg"
+               @click.prevent="addFavorite(product)"
+                v-show="!isFavorite">
+                <i class="far fa-heart"></i>
+              </a>
             </div>
           </div>
         </div>
@@ -43,17 +56,18 @@
             </ul>
             <div class="product-cart">
               <div class="counter">
-                <a href="#" class="addNum" @click.prevent="num += 1">
-                  <i class="fas fa-plus"></i>
-                </a>
-                <input type="number" min="0" max="10" readonly="readonly" class="counter-input"
-                 v-model="num">
                 <a href="#" class="lessNum" @click.prevent="lessNum()">
                   <i class="fas fa-minus"></i>
                 </a>
+                <input type="number" min="1" readonly="readonly" class="counter-input"
+                 v-model="counterNum">
+                <a href="#" class="addNum" @click.prevent="counterNum += 1">
+                  <i class="fas fa-plus"></i>
+                </a>
               </div>
 
-              <a href="#" class="btn btn-dark" @click.prevent="updateCartItem(product.id)">
+              <a href="#" class="btn btn-dark"
+               @click.prevent="updateCartItem(product.id)">
                 <span class="mr-1">
                   <i class="fas fa-shopping-basket"></i>
                 </span>
@@ -86,6 +100,11 @@
 </template>
 
 <script>
+import bannerImgAllmenu from '@/assets/images/banner-allmenu.jpg';
+import bannerImgMaintmeal from '@/assets/images/banner-mainmeal.jpg';
+import bannerImgLightmeal from '@/assets/images/banner-lightmeal.jpg';
+import bannerImgDessert from '@/assets/images/banner-dessert.jpg';
+import bannerImgDrinks from '@/assets/images/banner-drinks.jpg';
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import 'swiper/css/swiper.css';
 
@@ -94,11 +113,36 @@ export default {
   data() {
     return {
       isLoading: false,
-      categoryName: '',
+      counterNum: 1,
       product: {},
       relatedProducts: [],
       carts: [],
-      num: 1,
+      favorites: [],
+      isFavorite: false,
+      categoryName: '',
+      bannerImg: '',
+      categories: [
+        {
+          title: '全部',
+          bannerImg: bannerImgAllmenu,
+        },
+        {
+          title: '主餐',
+          bannerImg: bannerImgMaintmeal,
+        },
+        {
+          title: '輕食',
+          bannerImg: bannerImgLightmeal,
+        },
+        {
+          title: '甜點',
+          bannerImg: bannerImgDessert,
+        },
+        {
+          title: '飲品',
+          bannerImg: bannerImgDrinks,
+        },
+      ],
       swiperOption: {
         slidesPerView: 1,
         spaceBetween: 30,
@@ -126,10 +170,10 @@ export default {
   },
   methods: {
     lessNum() {
-      if (this.num > 2) {
-        this.num -= 1;
+      if (this.counterNum > 2) {
+        this.counterNum -= 1;
       } else {
-        this.num = 1;
+        this.counterNum = 1;
       }
     },
     getRelated(category) {
@@ -151,6 +195,27 @@ export default {
         vm.product = res.data.data;
         vm.isLoading = false;
         vm.getRelated(vm.product.category);
+        vm.getFavorites();
+
+        // 依分類設定封面圖
+        vm.categories.forEach((item, index) => {
+          if (item.title === vm.product.category) {
+            vm.bannerImg = vm.categories[index].bannerImg;
+          }
+        });
+      }).catch(() => {
+        vm.isLoading = false;
+        vm.$swal({
+          title: '錯誤',
+          text: '找不到此商品',
+          confirmButtonColor: '#dc3545',
+          confirmButtonText: '確認',
+          customClass: {
+            title: 'swal-title swal-title-danger',
+          },
+        }).then(() => {
+          vm.$router.push('/products');
+        });
       });
     },
     getCarts() {
@@ -168,13 +233,13 @@ export default {
       let n = 0;
       let method = 'post';
 
-      n = Number(vm.num);
+      n = Number(vm.counterNum);
 
       const isInCart = vm.carts.filter((item) => item.product.id === id);
 
       if (isInCart.length > 0) {
         method = 'patch';
-        n = Number(isInCart[0].quantity) + Number(vm.num);
+        n = Number(isInCart[0].quantity) + Number(vm.counterNum);
       }
 
       const data = {
@@ -202,6 +267,55 @@ export default {
         vm.$bus.$emit('alertmessage', msg);
       });
     },
+    getFavorites() {
+      const vm = this;
+      vm.favorites = JSON.parse(localStorage.getItem('favoriteData')) || [];
+
+      // 查詢此商品是否在我的最愛中
+      vm.isFavorite = false;
+      vm.favorites.forEach((favoriteItem) => {
+        if (vm.product.id === favoriteItem.id) {
+          vm.isFavorite = true;
+        }
+      });
+    },
+    addFavorite(item) {
+      const vm = this;
+      const favoriteData = {
+        id: item.id,
+        title: item.title,
+        imageUrl: item.imageUrl[0],
+      };
+      vm.favorites.push(favoriteData);
+      localStorage.setItem('favoriteData', JSON.stringify(vm.favorites));
+
+      const msg = {
+        icon: 'success',
+        title: '已加入我的最愛',
+      };
+      vm.$bus.$emit('alertmessage', msg);
+
+      vm.$emit('get-favorites');
+      vm.getFavorites();
+    },
+    delFavoriteItem(item) {
+      const vm = this;
+      vm.favorites.forEach((favoriteItem, index) => {
+        if (favoriteItem.id === item.id) {
+          vm.favorites.splice(index, 1);
+        }
+      });
+      localStorage.setItem('favoriteData', JSON.stringify(vm.favorites));
+
+      const msg = {
+        icon: 'success',
+        title: '已刪除我的最愛',
+      };
+      vm.$bus.$emit('alertmessage', msg);
+
+      vm.$emit('get-favorites');
+      vm.getFavorites();
+    },
   },
   components: {
     Swiper,
@@ -218,27 +332,13 @@ export default {
 <style lang="scss" scoped>
 @import '@/assets/scss/all';
 
-.breadcrumb-item a {
-  color: darken($light, 20%);
-}
-
 .product {
-  min-height: calc(100vh - 3.5rem - 3rem - 15rem);
+  min-height: calc(100vh - 3.5rem);
   padding-bottom: 3rem;
-  @include pad {
-    min-height: calc(100vh - 3.5rem - 3rem - 20rem);
-  }
 }
 
 .pagebanner {
-  min-height: 15rem;
-  margin-bottom: 1.5rem;
-  background: url('../../assets/images/pagebanner.jpg') center no-repeat;
-  background-size: cover;
-  @include pad {
-    min-height: 20rem;
-    margin-bottom: 2rem;
-  }
+  margin-bottom: 2rem;
 }
 
 .cover {
@@ -262,7 +362,7 @@ export default {
     right: 1.5rem;
     width: 100%;
     height: 100%;
-    background-color: $primary;
+    background-color: $muted;
     border-radius: 0.25rem;
     z-index: -1;
   }
@@ -270,7 +370,7 @@ export default {
 
 .product-category {
   margin-bottom: 1.5rem;
-  color: $muted;
+  color: $secondary;
   font-size: 1.25rem;
 }
 
@@ -287,7 +387,7 @@ export default {
 
 .price-through {
   margin-right: 1rem;
-  color: $muted;
+  color: $primary;
   font-size: 1rem;
   text-decoration: line-through;
 }
@@ -303,47 +403,13 @@ export default {
 }
 
 .counter {
-  display: flex;
-  margin-bottom: 1rem;
-  @include mobile {
-    margin-bottom: 0;
-  }
-}
-
-.counter-input {
-  width: 100%;
-  padding: 0.25rem;
-  border: 1px solid $dark;
-  border-radius: 0;
-  text-align: center;
-  outline: none;
-  cursor: context-menu;
-}
-
-.addNum, .lessNum {
-  padding: 0.4rem 0.75rem;
-  border: 1px solid $dark;
-  color: $dark;
-  &:hover, &:focus {
-    color: $white;
-    background-color: darken($dark, 10%);
-  }
-}
-
-.addNum {
-  border-right: none;
-  border-radius: 0.25rem 0 0 0.25rem;
-}
-
-.lessNum {
-  border-left: none;
-  border-radius: 0 0.25rem 0.25rem 0;
+  margin: 0;
 }
 
 .product-subtitle {
-  border-bottom: 2px solid $dark;
   margin-bottom: 0.5rem;
   padding-bottom: 0.5rem;
+  border-bottom: 2px solid $dark;
   text-align: left;
   font-size: 1.25rem;
 }
@@ -371,22 +437,26 @@ export default {
   background-position: center;
   background-repeat: no-repeat;
   border-radius: 0.25rem;
-  transition: 0.3s all ease;
-  &:hover {
-    box-shadow: 0px 1px 2px 4px rgba($muted, 0.3);
+  transition: 0.5s all ease;
+  &:hover, &:focus {
+    box-shadow: 0px 0px 3px 4px $primary;
+    .swipter-item-category {
+      background-color: $dark;
+    }
   }
 }
 
 .swipter-item-category {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 0.25rem;
-    background-color: rgba($dark, 0.8);
-    border-bottom-right-radius: 0.25rem;
-    border-bottom-left-radius: 0.25rem;
-    text-align: center;
-    color: $white;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.25rem;
+  background-color: rgba($dark, 0.8);
+  border-bottom-right-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+  transition: 0.5s all ease;
+  text-align: center;
+  color: $white;
 }
 </style>

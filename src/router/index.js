@@ -33,6 +33,11 @@ const routes = [
         component: () => import('../views/front/About.vue'),
       },
       {
+        path: 'contact',
+        name: 'Contact',
+        component: () => import('../views/front/Contact.vue'),
+      },
+      {
         path: 'createorder',
         name: 'CreateOrder',
         component: () => import('../views/front/CreateOrder.vue'),
