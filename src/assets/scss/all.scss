@@ -14,60 +14,73 @@ $font-logo: 'Kaushan Script', cursive;
   font-size: 1.5rem;
 }
 
+.pagebanner {
+  padding: 11rem 0 8rem;
+  background-size: cover;
+  background-position: 50%;
+  background-repeat: no-repeat;
+  text-align: center;
+  color: $white;
+  h2{
+    display:inline-block;
+    margin-bottom:0;
+    padding:1rem 5rem;
+    background-color:rgba(52,58,64,.8);
+    border-radius:.25rem;
+    font-size:1.5rem
+  }
+}
+
 // checkorder order 頁面
 
 .checkorder {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: calc(100vh - 3.5rem - 3rem);
   padding: 2rem 1rem;
-  @include mobile {
-    padding: 3rem 0;
+  @include desktop-s {
+    padding: 2rem 3rem
   }
+  @include desktop {
+    padding: 3rem 7rem
+  }
+}
+
+.step-wrap {
+	background-color: $dark;
 }
 
 .step {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 2.5rem;
+	display: flex;
+	justify-content: center;
+  margin-bottom: 2rem;
+  @include desktop {
+    margin-bottom: 3.5rem;
+  }
 }
 
 .step-item {
-  display: none;
-  position: relative;
-  padding: 1rem 2rem;
-  background-color: $primary;
-  border: 2px solid darken($primary, 4%);
-  border-radius: 0.25rem;
-  color: $white;
-  @include mobile {
+	display: none;
+	position: relative;
+	padding: 1rem 2rem;
+	background-color: $light;
+	border: 2px solid $muted;
+	border-radius: .25rem;
+  text-align: center;
+  @include pad {
     display: block;
-    margin-left: 10rem;
-  }
-  &:before {
-    content: "";
-    display: block;
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    width: 100%;
-    height: 100%;
-    background-color: $primary;
-    border-radius: 0.25rem;
-    z-index: -1;
+	  margin-left: 10rem
   }
   &:after {
     content: "";
     display: none;
     position: absolute;
+    top: 50%;
     right: 0;
-    width: 20rem;
-    height: 0.25rem;
-    background-color: $primary;
+    width: 25rem;
+    height: .5rem;
+    background-color: $light;
+    border: 1px solid $muted;
     z-index: -2;
-    @include mobile {
-      display: block;
+    @include pad {
+      display: block
     }
   }
   &:first-child {
@@ -79,21 +92,86 @@ $font-logo: 'Kaushan Script', cursive;
   &.active {
     background-color: $dark;
     border: 2px solid $dark;
+    color: $light;
     &:after {
       background-color: $dark;
+	    border: 1px solid $dark;
     }
   }
 }
 
-.step-active  {
-  display: block;
+.step-active {
+	display: block
 }
 
 .checkorder-title {
-  margin-bottom: 2rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 4px solid $dark;
-  font-size: 1.5rem;
+	margin-bottom: 0;
+	padding: .75rem 1.5rem;
+	background-color: $dark;
+	color: $white;
+	font-size: 1rem;
+	font-weight: 400
+}
+
+// counter
+
+.counter {
+  display: flex;
+  max-width: 10rem;
+  margin: 0 auto 1rem;
+  @include mobile {
+    margin-bottom: 0;
+  }
+}
+
+.counter-input {
+  width: 100%;
+  padding: 0.25rem;
+  border: 1px solid $dark;
+  border-radius: 0;
+  text-align: center;
+  outline: none;
+  cursor: context-menu;
+}
+
+.addNum, .lessNum {
+  padding: 0.4rem 0.75rem;
+  border: 1px solid $dark;
+  color: $dark;
+  &:hover, &:focus {
+    color: $white;
+    background-color: darken($dark, 10%);
+  }
+}
+
+.lessNum {
+  border-right: none;
+  border-radius: 0.25rem 0 0 0.25rem;
+}
+
+.addNum {
+  border-left: none;
+  border-radius: 0 0.25rem 0.25rem 0;
+}
+
+//favorite-icon
+
+.favorite-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: .25rem 1rem;
+  transition: all .3s ease;
+  color: $danger;
+  font-size: 1.75rem;
+  &:hover {
+    transform: scale(1.2);
+    color: $danger;
+  }
+}
+
+.favorite-icon-lg {
+  font-size: 2rem;
 }
 
 // swiper pagination 設定

@@ -15,3 +15,19 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 input[type="number"]{
   -moz-appearance: textfield;
 }
+
+// select 選單設定
+select:required:invalid {
+	color: $gray-600;
+}
+option[value=""][disabled] {
+	display: none;
+}
+option {
+	color: $dark;
+}
+
+// 禁止按鈕
+button[disabled]{
+  cursor: not-allowed;
+}
