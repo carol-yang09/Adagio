@@ -253,7 +253,7 @@ export default {
           icon: 'success',
           title: '更新購物車成功',
         };
-        vm.$bus.$emit('alertmessage', msg);
+        vm.$store.dispatch('alertMessageModules/openToast', msg);
       }).catch(() => {
         vm.$store.dispatch('updateLoading', false, { root: true });
 
@@ -261,7 +261,7 @@ export default {
           icon: 'error',
           title: '更新購物車失敗',
         };
-        vm.$bus.$emit('alertmessage', msg);
+        vm.$store.dispatch('alertMessageModules/openToast', msg);
       });
     },
     getFavorites() {
@@ -290,7 +290,7 @@ export default {
         icon: 'success',
         title: '已加入我的最愛',
       };
-      vm.$bus.$emit('alertmessage', msg);
+      vm.$store.dispatch('alertMessageModules/openToast', msg);
 
       vm.$emit('get-favorites');
       vm.getFavorites();
@@ -308,7 +308,7 @@ export default {
         icon: 'success',
         title: '已刪除我的最愛',
       };
-      vm.$bus.$emit('alertmessage', msg);
+      vm.$store.dispatch('alertMessageModules/openToast', msg);
 
       vm.$emit('get-favorites');
       vm.getFavorites();

@@ -1,7 +1,5 @@
 <template>
   <div>
-    <AlertMessage/>
-
     <loading :active.sync="isLoading" :is-full-page="true"></loading>
 
     <nav class="navbar sticky-top navbar-dark bg-dark">
@@ -69,7 +67,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import AlertMessage from '../components/AlertMessage.vue';
 
 export default {
   name: 'DashboardLayout',
@@ -101,7 +98,7 @@ export default {
           icon: 'success',
           title: '登出成功',
         };
-        vm.$bus.$emit('alertmessage', msg);
+        vm.$store.dispatch('alertMessageModules/openToast', msg);
 
         vm.$router.push('/login');
       });
@@ -120,7 +117,7 @@ export default {
             icon: 'error',
             title: '出現錯誤',
           };
-          vm.$bus.$emit('alertmessage', msg);
+          vm.$store.dispatch('alertMessageModules/openToast', msg);
 
           vm.$router.push('/login');
         }
@@ -132,9 +129,6 @@ export default {
   },
   computed: {
     ...mapGetters(['isLoading']),
-  },
-  components: {
-    AlertMessage,
   },
   created() {
     this.checkLogin();

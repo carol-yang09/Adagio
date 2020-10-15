@@ -227,7 +227,7 @@ export default {
           icon: 'error',
           title: '載入產品失敗',
         };
-        vm.$bus.$emit('alertmessage', msg);
+        vm.$store.dispatch('alertMessageModules/openToast', msg);
       });
     },
     openModal(status, item) {
@@ -274,7 +274,7 @@ export default {
           icon: 'success',
           title: `${status}產品成功`,
         };
-        vm.$bus.$emit('alertmessage', msg);
+        vm.$store.dispatch('alertMessageModules/openToast', msg);
       }).catch(() => {
         $('#editModal').modal('hide');
         vm.$store.dispatch('updateLoading', false, { root: true });
@@ -282,7 +282,7 @@ export default {
           icon: 'error',
           title: `${status}產品失敗`,
         };
-        vm.$bus.$emit('alertmessage', msg);
+        vm.$store.dispatch('alertMessageModules/openToast', msg);
       });
     },
     delProduct() {
@@ -297,14 +297,14 @@ export default {
           icon: 'success',
           title: '刪除產品成功',
         };
-        vm.$bus.$emit('alertmessage', msg);
+        vm.$store.dispatch('alertMessageModules/openToast', msg);
       }).catch(() => {
         vm.$store.dispatch('updateLoading', false, { root: true });
         const msg = {
           icon: 'error',
           title: '刪除產品失敗',
         };
-        vm.$bus.$emit('alertmessage', msg);
+        vm.$store.dispatch('alertMessageModules/openToast', msg);
       });
       $('#delModal').modal('hide');
     },
@@ -331,14 +331,14 @@ export default {
           icon: 'success',
           title: '上傳圖檔成功',
         };
-        vm.$bus.$emit('alertmessage', msg);
+        vm.$store.dispatch('alertMessageModules/openToast', msg);
       }).catch(() => {
         vm.$store.dispatch('updateLoading', false, { root: true });
         const msg = {
           icon: 'error',
           title: '上傳圖檔失敗，請確認檔案大小',
         };
-        vm.$bus.$emit('alertmessage', msg);
+        vm.$store.dispatch('alertMessageModules/openToast', msg);
       });
     },
   },

@@ -156,7 +156,7 @@ export default {
         text: '謝謝您的回饋，我們已收到',
         status: 'success',
       };
-      vm.$bus.$emit('alertmessage', msg, 'modal');
+      vm.$store.dispatch('alertMessageModules/openModal', msg);
     },
   },
 };

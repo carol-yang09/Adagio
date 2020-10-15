@@ -82,14 +82,14 @@ export default {
           icon: 'success',
           title: '更新成功',
         };
-        vm.$bus.$emit('alertmessage', msg);
+        vm.$store.dispatch('alertMessageModules/openToast', msg);
       }).catch(() => {
         vm.$store.dispatch('updateLoading', false, { root: true });
         const msg = {
           icon: 'error',
           title: '更新失敗',
         };
-        vm.$bus.$emit('alertmessage', msg);
+        vm.$store.dispatch('alertMessageModules/openToast', msg);
       });
     },
   },

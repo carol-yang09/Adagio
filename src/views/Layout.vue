@@ -1,7 +1,5 @@
 <template>
   <div>
-    <AlertMessage/>
-
     <loading :active.sync="isLoading" :is-full-page="true"></loading>
 
     <div class="header-wrap" :class="{'header-scroll': isMenuOpen || scrollHeader}">
@@ -140,7 +138,6 @@
 <script>
 /* global $ */
 import { mapGetters } from 'vuex';
-import AlertMessage from '../components/AlertMessage.vue';
 
 export default {
   name: 'Layout',
@@ -179,7 +176,7 @@ export default {
           icon: 'success',
           title: '已刪除此筆資料',
         };
-        vm.$bus.$emit('alertmessage', msg);
+        vm.$store.dispatch('alertMessageModules/openToast', msg);
         vm.getCarts();
 
         // 若在 checkorder 或 Products 或 Product 頁則重整內頁購物車
@@ -193,7 +190,7 @@ export default {
           icon: 'error',
           title: '刪除購物車失敗',
         };
-        vm.$bus.$emit('alertmessage', msg);
+        vm.$store.dispatch('alertMessageModules/openToast', msg);
       });
     },
     getFavorites() {
@@ -222,7 +219,7 @@ export default {
             icon: 'success',
             title: '已刪除全部我的最愛',
           };
-          vm.$bus.$emit('alertmessage', msg);
+          vm.$store.dispatch('alertMessageModules/openToast', msg);
 
           vm.getFavorites();
 
@@ -247,7 +244,7 @@ export default {
         icon: 'success',
         title: '已刪除我的最愛',
       };
-      vm.$bus.$emit('alertmessage', msg);
+      vm.$store.dispatch('alertMessageModules/openToast', msg);
 
       vm.getFavorites();
 
@@ -288,9 +285,6 @@ export default {
         vm.isMenuOpen = false;
       }
     },
-  },
-  components: {
-    AlertMessage,
   },
   created() {
     const vm = this;

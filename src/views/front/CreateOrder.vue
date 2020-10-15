@@ -337,7 +337,7 @@ export default {
           icon: 'error',
           title: '商品數量必須大於 1 樣',
         };
-        vm.$bus.$emit('alertmessage', msg);
+        vm.$store.dispatch('alertMessageModules/openToast', msg);
       } else {
         const data = {
           product: id,
@@ -353,14 +353,14 @@ export default {
             icon: 'success',
             title: '更新購物車成功',
           };
-          vm.$bus.$emit('alertmessage', msg);
+          vm.$store.dispatch('alertMessageModules/openToast', msg);
         }).catch(() => {
           vm.$store.dispatch('updateLoading', false, { root: true });
           const msg = {
             icon: 'error',
             title: '更新購物車失敗',
           };
-          vm.$bus.$emit('alertmessage', msg);
+          vm.$store.dispatch('alertMessageModules/openToast', msg);
         });
       }
     },
@@ -392,7 +392,7 @@ export default {
           title: '已刪除此筆資料',
         };
         vm.$store.dispatch('updateLoading', false, { root: true });
-        vm.$bus.$emit('alertmessage', msg);
+        vm.$store.dispatch('alertMessageModules/openToast', msg);
 
         vm.$emit('get-carts');
         vm.getCarts();
@@ -401,8 +401,7 @@ export default {
           icon: 'error',
           title: '刪除購物車失敗',
         };
-        vm.$bus.$emit('alertmessage', msg);
-
+        vm.$store.dispatch('alertMessageModules/openToast', msg);
         vm.$store.dispatch('updateLoading', false, { root: true });
       });
     },
@@ -420,7 +419,7 @@ export default {
           text: '請輸入折價劵代碼',
           status: 'danger',
         };
-        vm.$bus.$emit('alertmessage', msg, 'modal');
+        vm.$store.dispatch('alertMessageModules/openModal', msg);
         return;
       }
 
@@ -431,7 +430,7 @@ export default {
           icon: 'success',
           title: '已成功使用此 Coupon 券',
         };
-        vm.$bus.$emit('alertmessage', msg);
+        vm.$store.dispatch('alertMessageModules/openToast', msg);
 
         vm.couponInput = '';
         vm.$store.dispatch('updateLoading', false, { root: true });
@@ -440,7 +439,7 @@ export default {
           icon: 'error',
           title: '出錯了~ 此 Coupon 券無效',
         };
-        vm.$bus.$emit('alertmessage', msg);
+        vm.$store.dispatch('alertMessageModules/openToast', msg);
         vm.$store.dispatch('updateLoading', false, { root: true });
       });
     },
@@ -471,8 +470,7 @@ export default {
           text: '出錯了~ 請重新訂購',
           status: 'danger',
         };
-        vm.$bus.$emit('alertmessage', msg, 'modal');
-
+        vm.$store.dispatch('alertMessageModules/openToast', msg);
         vm.$store.dispatch('updateLoading', false, { root: true });
       });
     },

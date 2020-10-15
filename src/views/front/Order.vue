@@ -163,7 +163,7 @@ export default {
           icon: 'error',
           title: '付款失敗',
         };
-        vm.$bus.$emit('alertmessage', msg);
+        vm.$store.dispatch('alertMessageModules/openToast', msg);
         vm.$store.dispatch('updateLoading', false, { root: true });
       });
     },

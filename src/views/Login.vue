@@ -1,10 +1,8 @@
 <template>
   <div class="login">
-    <AlertMessage/>
-
     <loading :active.sync="isLoading" :is-full-page="true"></loading>
 
-    <h1 class="logo mb-5 text-white">Adagio</h1>
+    <h1 class="logo">Adagio</h1>
 
     <ValidationObserver class="form-signin" v-slot="{ invalid }" tag="form"
      @submit.prevent="login()">
@@ -40,7 +38,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import AlertMessage from '../components/AlertMessage.vue';
 
 export default {
   name: 'Login',
@@ -66,32 +63,32 @@ export default {
           icon: 'success',
           title: '登入成功',
         };
-        vm.$bus.$emit('alertmessage', msg);
+        vm.$store.dispatch('alertMessageModules/openToast', msg);
 
         vm.$router.push('/admin/productsmanage');
       }).catch(() => {
         vm.$store.dispatch('updateLoading', false, { root: true });
 
         const msg = {
-          icon: 'success',
+          icon: 'error',
           title: '登入失敗',
         };
-        vm.$bus.$emit('alertmessage', msg);
+        vm.$store.dispatch('alertMessageModules/openToast', msg);
       });
     },
   },
   computed: {
     ...mapGetters(['isLoading']),
   },
-  components: {
-    AlertMessage,
-  },
 };
 </script>
 
 <style lang="scss" scoped>
 @import '@/assets/scss/all';
-
+.logo {
+  margin-bottom: 2rem;
+  font-size: 4rem;
+}
 .login {
   display: flex;
   flex-direction: column;

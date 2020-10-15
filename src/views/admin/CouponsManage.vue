@@ -212,14 +212,14 @@ export default {
           icon: 'success',
           title: `${status}優惠劵成功`,
         };
-        vm.$bus.$emit('alertmessage', msg);
+        vm.$store.dispatch('alertMessageModules/openToast', msg);
       }).catch(() => {
         vm.$store.dispatch('updateLoading', false, { root: true });
         const msg = {
           icon: 'error',
           title: `${status}優惠劵失敗`,
         };
-        vm.$bus.$emit('alertmessage', msg);
+        vm.$store.dispatch('alertMessageModules/openToast', msg);
       });
       $('#editModal').modal('hide');
     },
@@ -234,14 +234,14 @@ export default {
           icon: 'success',
           title: '刪除優惠劵成功',
         };
-        vm.$bus.$emit('alertmessage', msg);
+        vm.$store.dispatch('alertMessageModules/openToast', msg);
       }).catch(() => {
         vm.$store.dispatch('updateLoading', false, { root: true });
         const msg = {
           icon: 'error',
           title: '刪除優惠劵失敗',
         };
-        vm.$bus.$emit('alertmessage', msg);
+        vm.$store.dispatch('alertMessageModules/openToast', msg);
       });
       $('#delModal').modal('hide');
     },
