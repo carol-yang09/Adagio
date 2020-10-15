@@ -177,12 +177,13 @@
       </div>
     </div>
 
-    <Pagination :pages="pagination" @get-data="getProducts"/>
+    <Pagination @get-data="getProducts"/>
   </div>
 </template>
 
 <script>
 /* global $ */
+import { mapGetters } from 'vuex';
 import { VueEditor } from 'vue2-editor';
 import Pagination from '@/components/Pagination.vue';
 
@@ -190,8 +191,6 @@ export default {
   name: 'ProductsManage',
   data() {
     return {
-      pagination: {},
-      products: {},
       tempProduct: {
         imageUrl: [],
         options: {
@@ -203,46 +202,25 @@ export default {
   },
   methods: {
     getProducts(page = 1) {
-      const vm = this;
-      const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/admin/ec/products?page=${page}&paged=10`;
-      vm.$store.dispatch('updateLoading', true, { root: true });
-      vm.$http.get(url).then((res) => {
-        vm.products = res.data.data;
-        vm.pagination = res.data.meta.pagination;
-        vm.$store.dispatch('updateLoading', false, { root: true });
-      });
-    },
-    getProduct(id) {
-      const vm = this;
-      const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/admin/ec/product/${id}`;
-      vm.$store.dispatch('updateLoading', true, { root: true });
-      vm.$http.get(url).then((res) => {
-        vm.tempProduct = res.data.data;
-        $('#editModal').modal('show');
-        vm.$store.dispatch('updateLoading', false, { root: true });
-      }).catch(() => {
-        $('#editModal').modal('hide');
-        vm.$store.dispatch('updateLoading', false, { root: true });
-        const msg = {
-          icon: 'error',
-          title: '載入產品失敗',
-        };
-        vm.$store.dispatch('alertMessageModules/openToast', msg);
-      });
+      const routerName = this.$route.name;
+      this.$store.dispatch('productsModules/getProducts', { routerName, page })
+        .then((res) => {
+          this.$store.dispatch('paginationModules/getPagination', { routerName, data: res.data }, { root: true });
+        });
     },
     openModal(status, item) {
       this.status = '';
       switch (status) {
         case 'del':
-          $('#delModal').modal('show');
           this.tempProduct = { ...item };
+          $('#delModal').modal('show');
           break;
         case 'update':
-          this.getProduct(item.id);
+          this.tempProduct = { ...item };
           this.status = 'update';
+          $('#editModal').modal('show');
           break;
         case 'create':
-          $('#editModal').modal('show');
           this.tempProduct = {
             imageUrl: [],
             options: {
@@ -250,6 +228,7 @@ export default {
             },
           };
           this.status = 'create';
+          $('#editModal').modal('show');
           break;
         default:
           break;
@@ -257,22 +236,24 @@ export default {
     },
     updateProduct() {
       const vm = this;
-      let status = '新增';
-      let method = 'post';
       let url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/admin/ec/product`;
+      let statusTitle = '新增';
+      let method = 'post';
+
       if (vm.status === 'update') {
         method = 'patch';
         url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/admin/ec/product/${vm.tempProduct.id}`;
-        status = '更新';
+        statusTitle = '更新';
       }
+
       vm.$store.dispatch('updateLoading', true, { root: true });
       vm.$http[method](url, vm.tempProduct).then(() => {
+        $('#editModal').modal('hide');
         vm.$store.dispatch('updateLoading', false, { root: true });
         vm.getProducts();
-        $('#editModal').modal('hide');
         const msg = {
           icon: 'success',
-          title: `${status}產品成功`,
+          title: `${statusTitle}產品成功`,
         };
         vm.$store.dispatch('alertMessageModules/openToast', msg);
       }).catch(() => {
@@ -280,7 +261,7 @@ export default {
         vm.$store.dispatch('updateLoading', false, { root: true });
         const msg = {
           icon: 'error',
-          title: `${status}產品失敗`,
+          title: `${statusTitle}產品失敗`,
         };
         vm.$store.dispatch('alertMessageModules/openToast', msg);
       });
@@ -310,11 +291,11 @@ export default {
     },
     uploadFile() {
       const vm = this;
+      const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/admin/storage`;
       const file = vm.$refs.file.files[0];
       const formData = new FormData();
       formData.append('file', file);
       vm.$store.dispatch('updateLoading', true, { root: true });
-      const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/admin/storage`;
       vm.$http.post(url, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -341,6 +322,9 @@ export default {
         vm.$store.dispatch('alertMessageModules/openToast', msg);
       });
     },
+  },
+  computed: {
+    ...mapGetters('productsModules', ['products']),
   },
   components: {
     VueEditor,

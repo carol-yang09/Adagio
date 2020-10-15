@@ -28,37 +28,45 @@ export default ({
     },
     updateCartItem(context, { id, num, method }) {
       const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/shopping`;
+      let n = Number(num);
+      let httpMethod = 'post';
 
-      if (num <= 0) {
+      const isInCart = context.state.carts.filter((item) => item.product.id === id);
+
+      switch (true) {
+        case method === 'set':
+          httpMethod = 'patch';
+          break;
+        case isInCart.length > 0:
+          httpMethod = 'patch';
+          n += Number(isInCart[0].quantity);
+          break;
+        default:
+          break;
+      }
+
+      const data = {
+        product: id,
+        quantity: n,
+      };
+      context.commit('LOADING', true, { root: true });
+
+      axios[httpMethod](url, data).then(() => {
+        context.commit('LOADING', false, { root: true });
+        context.dispatch('getCarts');
         const msg = {
-          icon: 'error',
-          title: '商品數量必須大於 1 樣',
+          icon: 'success',
+          title: '更新購物車成功',
         };
         context.dispatch('alertMessageModules/openToast', msg, { root: true });
-      } else {
-        const data = {
-          product: id,
-          quantity: num,
+      }).catch(() => {
+        context.commit('LOADING', false, { root: true });
+        const msg = {
+          icon: 'error',
+          title: '更新購物車失敗',
         };
-        context.commit('LOADING', true, { root: true });
-
-        axios[method](url, data).then(() => {
-          context.commit('LOADING', false, { root: true });
-          context.dispatch('getCarts');
-          const msg = {
-            icon: 'success',
-            title: '更新購物車成功',
-          };
-          context.dispatch('alertMessageModules/openToast', msg, { root: true });
-        }).catch(() => {
-          context.commit('LOADING', false, { root: true });
-          const msg = {
-            icon: 'error',
-            title: '更新購物車失敗',
-          };
-          context.dispatch('alertMessageModules/openToast', msg, { root: true });
-        });
-      }
+        context.dispatch('alertMessageModules/openToast', msg, { root: true });
+      });
     },
     delCartItem(context, id) {
       const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/shopping/${id}`;

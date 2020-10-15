@@ -30,8 +30,4 @@ export default ({
       });
     },
   },
-  mutations: {
-  },
-  getters: {
-  },
 });

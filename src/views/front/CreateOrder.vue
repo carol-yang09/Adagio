@@ -53,13 +53,8 @@
                   >
                     <i class="fas fa-minus"></i>
                   </a>
-                  <input type="number" min="1" max="9999" class="counter-input"
-                    :value="cart.quantity"
-                    @keyup.enter="
-                    updateCartItem(cart.product.id, $event.target.value, $event)"
-                    @change="
-                    updateCartItem(cart.product.id, $event.target.value, $event)"
-                  >
+                  <input type="number" min="1" readonly="readonly"
+                   :value="cart.quantity" class="counter-input">
                   <a href="#" class="addNum"
                    @click.prevent="
                    updateCartItem(cart.product.id, cart.quantity + 1, $event)"
@@ -329,7 +324,15 @@ export default {
   },
   methods: {
     updateCartItem(id, num) {
-      this.$store.dispatch('cartModules/updateCartItem', { id, num, method: 'patch' });
+      if (num <= 0) {
+        const msg = {
+          icon: 'error',
+          title: '商品數量必須大於 1 樣',
+        };
+        this.$store.dispatch('alertMessageModules/openToast', msg);
+      } else {
+        this.$store.dispatch('cartModules/updateCartItem', { id, num, method: 'set' });
+      }
     },
     delCartItem(id) {
       this.$store.dispatch('cartModules/delCartItem', id);

@@ -128,7 +128,7 @@
       </div>
     </div>
 
-    <Pagination :pages="pagination" @get-data="getCoupons"/>
+    <Pagination @get-data="getCoupons"/>
   </div>
 </template>
 
@@ -141,7 +141,6 @@ export default {
   name: 'CouponsManage',
   data() {
     return {
-      pagination: {},
       coupons: {},
       tempCoupon: {
         title: '',
@@ -164,7 +163,7 @@ export default {
       vm.$store.dispatch('updateLoading', true, { root: true });
       vm.$http.get(url).then((res) => {
         vm.coupons = res.data.data;
-        vm.pagination = res.data.meta.pagination;
+        vm.$store.dispatch('paginationModules/getPagination', { routerName: this.$route.name, data: res.data });
         vm.$store.dispatch('updateLoading', false, { root: true });
       });
     },

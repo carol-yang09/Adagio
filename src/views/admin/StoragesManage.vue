@@ -47,7 +47,7 @@
       </div>
     </div>
 
-    <Pagination :pages="pagination" @get-data="getStorages"/>
+    <Pagination @get-data="getStorages"/>
   </div>
 </template>
 
@@ -71,7 +71,7 @@ export default {
       vm.$store.dispatch('updateLoading', true, { root: true });
       vm.$http.get(url).then((res) => {
         vm.storages = res.data.data;
-        vm.pagination = res.data.meta.pagination;
+        vm.$store.dispatch('paginationModules/getPagination', { routerName: this.$route.name, data: res.data });
         vm.$store.dispatch('updateLoading', false, { root: true });
       });
     },
