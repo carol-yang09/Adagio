@@ -1,7 +1,5 @@
 <template>
   <div>
-    <loading :active.sync="isLoading" :is-full-page="true"></loading>
-
     <div class="table-responsive">
       <table class="table">
         <thead>
@@ -54,7 +52,6 @@ export default {
   name: 'OrdersManage',
   data() {
     return {
-      isLoading: false,
       pagination: {},
       orders: {},
     };
@@ -63,11 +60,11 @@ export default {
     getOrders(page = 1) {
       const vm = this;
       const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/admin/ec/orders?page=${page}`;
-      vm.isLoading = true;
+      vm.$store.dispatch('updateLoading', true, { root: true });
       vm.$http.get(url).then((res) => {
         vm.orders = res.data.data;
         vm.pagination = res.data.meta.pagination;
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false, { root: true });
       });
     },
     setOrderPaid(item) {
@@ -77,9 +74,9 @@ export default {
       if (!item.paid) {
         url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/admin/ec/orders/${item.id}/unpaid`;
       }
-      vm.isLoading = true;
+      vm.$store.dispatch('updateLoading', true, { root: true });
       vm.$http.patch(url, item.id).then(() => {
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false, { root: true });
         vm.getOrders();
         const msg = {
           icon: 'success',
@@ -87,7 +84,7 @@ export default {
         };
         vm.$bus.$emit('alertmessage', msg);
       }).catch(() => {
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false, { root: true });
         const msg = {
           icon: 'error',
           title: '更新失敗',

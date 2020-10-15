@@ -1,7 +1,5 @@
 <template>
   <div class="home">
-    <loading :active.sync="isLoading" :is-full-page="true"></loading>
-
     <div class="banner" id="banner">
       <div class="banner-content">
         <h2 class="banner-title">Adagio</h2>
@@ -137,7 +135,6 @@ export default {
   name: 'Home',
   data() {
     return {
-      isLoading: false,
       swiperOption: {
         slidesPerView: 1,
         spaceBetween: 30,

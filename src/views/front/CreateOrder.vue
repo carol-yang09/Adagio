@@ -1,7 +1,5 @@
 <template>
   <div>
-    <loading :active.sync="isLoading" :is-full-page="true"></loading>
-
     <div class="pagebanner pagebanner-img">
       <h2>結帳流程</h2>
     </div>
@@ -312,7 +310,6 @@ export default {
   name: 'CreateOrder',
   data() {
     return {
-      isLoading: false,
       step: 1,
       couponInput: '',
       coupon: {},
@@ -346,10 +343,10 @@ export default {
           product: id,
           quantity: num,
         };
-        vm.isLoading = true;
+        vm.$store.dispatch('updateLoading', true, { root: true });
 
         vm.$http.patch(url, data).then(() => {
-          vm.isLoading = false;
+          vm.$store.dispatch('updateLoading', false, { root: true });
           vm.$emit('get-carts');
           vm.getCarts();
           const msg = {
@@ -358,7 +355,7 @@ export default {
           };
           vm.$bus.$emit('alertmessage', msg);
         }).catch(() => {
-          vm.isLoading = false;
+          vm.$store.dispatch('updateLoading', false, { root: true });
           const msg = {
             icon: 'error',
             title: '更新購物車失敗',
@@ -370,7 +367,7 @@ export default {
     getCarts() {
       const vm = this;
       const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/shopping`;
-      vm.isLoading = true;
+      vm.$store.dispatch('updateLoading', true, { root: true });
       let num = 0;
       let total = 0;
       vm.$http.get(url).then((res) => {
@@ -382,19 +379,19 @@ export default {
         });
         vm.cartNum = num;
         vm.totalMoney = total;
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false, { root: true });
       });
     },
     delCartItem(id) {
       const vm = this;
       const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/shopping/${id}`;
-      vm.isLoading = true;
+      vm.$store.dispatch('updateLoading', true, { root: true });
       vm.$http.delete(url, { product: id }).then(() => {
         const msg = {
           icon: 'success',
           title: '已刪除此筆資料',
         };
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false, { root: true });
         vm.$bus.$emit('alertmessage', msg);
 
         vm.$emit('get-carts');
@@ -406,18 +403,18 @@ export default {
         };
         vm.$bus.$emit('alertmessage', msg);
 
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false, { root: true });
       });
     },
     getCoupon() {
       const vm = this;
       const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/coupon/search`;
-      vm.isLoading = true;
+      vm.$store.dispatch('updateLoading', true, { root: true });
       vm.coupon = {};
       vm.orderData.coupon = '';
 
       if (!vm.couponInput) {
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false, { root: true });
         const msg = {
           title: '錯誤',
           text: '請輸入折價劵代碼',
@@ -437,22 +434,22 @@ export default {
         vm.$bus.$emit('alertmessage', msg);
 
         vm.couponInput = '';
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false, { root: true });
       }).catch(() => {
         const msg = {
           icon: 'error',
           title: '出錯了~ 此 Coupon 券無效',
         };
         vm.$bus.$emit('alertmessage', msg);
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false, { root: true });
       });
     },
     createOrder() {
       const vm = this;
       const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/orders`;
-      vm.isLoading = true;
+      vm.$store.dispatch('updateLoading', true, { root: true });
       vm.$http.post(url, vm.orderData).then((res) => {
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false, { root: true });
         const { id } = res.data.data;
         vm.$emit('get-carts');
         vm.$swal({
@@ -476,7 +473,7 @@ export default {
         };
         vm.$bus.$emit('alertmessage', msg, 'modal');
 
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false, { root: true });
       });
     },
   },

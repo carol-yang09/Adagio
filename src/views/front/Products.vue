@@ -1,7 +1,5 @@
 <template>
   <div class="products-wrap">
-    <loading :active.sync="isLoading" :is-full-page="true"></loading>
-
     <div class="pagebanner" :style="{backgroundImage: 'url(' + bannerImg + ')'}">
       <h2>產品列表</h2>
     </div>
@@ -113,7 +111,6 @@ export default {
   name: 'Products',
   data() {
     return {
-      isLoading: false,
       // 頁面相關
       currentPage: 1, // 所在頁面
       pagination: {
@@ -157,7 +154,7 @@ export default {
     getProducts() {
       const vm = this;
       const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/products`;
-      vm.isLoading = true;
+      vm.$store.dispatch('updateLoading', true, { root: true });
       vm.$http.get(url).then((res) => {
         vm.products = res.data.data;
 
@@ -173,16 +170,16 @@ export default {
         vm.getQuery();
         vm.getFavorites();
 
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false, { root: true });
       });
     },
     getCarts() {
       const vm = this;
       const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/shopping`;
-      vm.isLoading = true;
+      vm.$store.dispatch('updateLoading', true, { root: true });
       vm.$http.get(url).then((res) => {
         vm.carts = res.data.data;
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false, { root: true });
       });
     },
     updateCartItem(id, num) {
@@ -204,9 +201,9 @@ export default {
         product: id,
         quantity: n,
       };
-      vm.isLoading = true;
+      vm.$store.dispatch('updateLoading', true, { root: true });
       vm.$http[method](url, data).then(() => {
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false, { root: true });
         vm.getCarts();
         vm.$emit('get-carts');
 
@@ -216,7 +213,7 @@ export default {
         };
         vm.$bus.$emit('alertmessage', msg);
       }).catch(() => {
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false, { root: true });
 
         const msg = {
           icon: 'error',
@@ -231,10 +228,10 @@ export default {
 
       // 查詢各商品是否有在我的最愛中，有則加入 isFavorite:true，否則加入 isFavorite:false
       vm.products.forEach((productItem, index) => {
-        this.$set(vm.products[index], 'isFavorite', false);
+        vm.$set(vm.products[index], 'isFavorite', false);
         vm.favorites.forEach((favoriteItem) => {
           if (productItem.id === favoriteItem.id) {
-            this.$set(vm.products[index], 'isFavorite', true);
+            vm.$set(vm.products[index], 'isFavorite', true);
           }
         });
       });

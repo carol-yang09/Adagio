@@ -1,7 +1,5 @@
 <template>
   <div class="product">
-    <loading :active.sync="isLoading" :is-full-page="true"></loading>
-
     <div class="pagebanner" :style="{backgroundImage: 'url(' + bannerImg + ')'}">
       <h2>{{ product.category }}</h2>
     </div>
@@ -112,7 +110,6 @@ export default {
   name: 'Product',
   data() {
     return {
-      isLoading: false,
       counterNum: 1,
       product: {},
       relatedProducts: [],
@@ -179,21 +176,21 @@ export default {
     getRelated(category) {
       const vm = this;
       const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/products`;
-      vm.isLoading = true;
+      vm.$store.dispatch('updateLoading', true, { root: true });
       vm.$http.get(url).then((res) => {
         vm.relatedProducts = res.data.data.filter((item) => item.category === category
         && item.id !== vm.product.id);
 
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false, { root: true });
       });
     },
     getProduct(id) {
       const vm = this;
       const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/product/${id}`;
-      vm.isLoading = true;
+      vm.$store.dispatch('updateLoading', true, { root: true });
       vm.$http.get(url).then((res) => {
         vm.product = res.data.data;
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false, { root: true });
         vm.getRelated(vm.product.category);
         vm.getFavorites();
 
@@ -204,7 +201,7 @@ export default {
           }
         });
       }).catch(() => {
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false, { root: true });
         vm.$swal({
           title: '錯誤',
           text: '找不到此商品',
@@ -221,10 +218,10 @@ export default {
     getCarts() {
       const vm = this;
       const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/shopping`;
-      vm.isLoading = true;
+      vm.$store.dispatch('updateLoading', true, { root: true });
       vm.$http.get(url).then((res) => {
         vm.carts = res.data.data;
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false, { root: true });
       });
     },
     updateCartItem(id) {
@@ -246,9 +243,9 @@ export default {
         product: id,
         quantity: n,
       };
-      vm.isLoading = true;
+      vm.$store.dispatch('updateLoading', true, { root: true });
       vm.$http[method](url, data).then(() => {
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false, { root: true });
         vm.getCarts();
         vm.$emit('get-carts');
 
@@ -258,7 +255,7 @@ export default {
         };
         vm.$bus.$emit('alertmessage', msg);
       }).catch(() => {
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false, { root: true });
 
         const msg = {
           icon: 'error',

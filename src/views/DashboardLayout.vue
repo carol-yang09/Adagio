@@ -68,13 +68,13 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import AlertMessage from '../components/AlertMessage.vue';
 
 export default {
   name: 'DashboardLayout',
   data() {
     return {
-      isLoading: false,
       token: '',
       checkSuccess: false,
     };
@@ -83,7 +83,7 @@ export default {
     logout() {
       const vm = this;
       const token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
-      vm.isLoading = true;
+      vm.$store.dispatch('updateLoading', true, { root: true });
       vm.$http({
         method: 'post',
         url: `${process.env.VUE_APP_APIPATH}/auth/logout`,
@@ -95,7 +95,7 @@ export default {
         // 清空 cookie
         document.cookie = 'hexToken=;expires=;path=/';
         vm.checkSuccess = false;
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false, { root: true });
 
         const msg = {
           icon: 'success',
@@ -110,7 +110,7 @@ export default {
       const vm = this;
       const url = `${process.env.VUE_APP_APIPATH}/auth/check`;
       vm.token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
-      vm.isLoading = true;
+      vm.$store.dispatch('updateLoading', true, { root: true });
 
       vm.$http.defaults.headers.common.Authorization = `Bearer ${vm.token}`;
 
@@ -126,9 +126,12 @@ export default {
         }
 
         vm.checkSuccess = true;
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false, { root: true });
       });
     },
+  },
+  computed: {
+    ...mapGetters(['isLoading']),
   },
   components: {
     AlertMessage,
@@ -167,7 +170,6 @@ export default {
   display: flex;
   justify-content: center;
   padding: 0 1rem;
-  color: $muted;
   @include pad {
     justify-content: space-between;
   }

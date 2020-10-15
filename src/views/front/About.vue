@@ -1,7 +1,5 @@
 <template>
   <div>
-    <loading :active.sync="isLoading" :is-full-page="true"></loading>
-
     <div class="pagebanner pagebanner-img">
       <h2>關於我們</h2>
     </div>
@@ -33,7 +31,6 @@ export default {
   name: 'About',
   data() {
     return {
-      isLoading: false,
     };
   },
 };
