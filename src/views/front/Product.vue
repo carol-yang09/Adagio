@@ -54,18 +54,20 @@
             </ul>
             <div class="product-cart">
               <div class="counter">
-                <a href="#" class="lessNum" @click.prevent="lessNum()">
+                <a href="#" class="lessNum"
+                 @click.prevent="lessNum(counterNum - 1)">
                   <i class="fas fa-minus"></i>
                 </a>
                 <input type="number" min="1" readonly="readonly" class="counter-input"
                  v-model="counterNum">
-                <a href="#" class="addNum" @click.prevent="counterNum += 1">
+                <a href="#" class="addNum"
+                 @click.prevent="counterNum += 1">
                   <i class="fas fa-plus"></i>
                 </a>
               </div>
 
               <a href="#" class="btn btn-dark"
-               @click.prevent="updateCartItem(product.id)">
+               @click.prevent="updateCartItem(product.id, counterNum)">
                 <span class="mr-1">
                   <i class="fas fa-shopping-basket"></i>
                 </span>
@@ -98,6 +100,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
 import bannerImgAllmenu from '@/assets/images/banner-allmenu.jpg';
 import bannerImgMaintmeal from '@/assets/images/banner-mainmeal.jpg';
 import bannerImgLightmeal from '@/assets/images/banner-lightmeal.jpg';
@@ -113,7 +116,6 @@ export default {
       counterNum: 1,
       product: {},
       relatedProducts: [],
-      carts: [],
       favorites: [],
       isFavorite: false,
       categoryName: '',
@@ -215,54 +217,21 @@ export default {
         });
       });
     },
-    getCarts() {
+    updateCartItem(id, num) {
       const vm = this;
-      const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/shopping`;
-      vm.$store.dispatch('updateLoading', true, { root: true });
-      vm.$http.get(url).then((res) => {
-        vm.carts = res.data.data;
-        vm.$store.dispatch('updateLoading', false, { root: true });
-      });
-    },
-    updateCartItem(id) {
-      const vm = this;
-      const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/shopping`;
       let n = 0;
       let method = 'post';
 
-      n = Number(vm.counterNum);
+      n = Number(num);
 
-      const isInCart = vm.carts.filter((item) => item.product.id === id);
+      const isInCart = this.$store.state.cartModules.carts.filter((item) => item.product.id === id);
 
       if (isInCart.length > 0) {
         method = 'patch';
-        n = Number(isInCart[0].quantity) + Number(vm.counterNum);
+        n = Number(isInCart[0].quantity) + Number(num);
       }
 
-      const data = {
-        product: id,
-        quantity: n,
-      };
-      vm.$store.dispatch('updateLoading', true, { root: true });
-      vm.$http[method](url, data).then(() => {
-        vm.$store.dispatch('updateLoading', false, { root: true });
-        vm.getCarts();
-        vm.$emit('get-carts');
-
-        const msg = {
-          icon: 'success',
-          title: '更新購物車成功',
-        };
-        vm.$store.dispatch('alertMessageModules/openToast', msg);
-      }).catch(() => {
-        vm.$store.dispatch('updateLoading', false, { root: true });
-
-        const msg = {
-          icon: 'error',
-          title: '更新購物車失敗',
-        };
-        vm.$store.dispatch('alertMessageModules/openToast', msg);
-      });
+      vm.$store.dispatch('cartModules/updateCartItem', { id, num: n, method });
     },
     getFavorites() {
       const vm = this;
@@ -313,6 +282,10 @@ export default {
       vm.$emit('get-favorites');
       vm.getFavorites();
     },
+    ...mapActions('cartModules', ['getCarts']),
+  },
+  computed: {
+    ...mapGetters('cartModules', ['carts']),
   },
   components: {
     Swiper,
@@ -321,7 +294,7 @@ export default {
   created() {
     const id = this.$route.params.productId;
     this.getProduct(id);
-    this.getCarts();
+    this.$store.dispatch('cartModules/getCarts');
   },
 };
 </script>

@@ -49,20 +49,20 @@
                 <div class="counter">
                   <a href="#" class="lessNum"
                    @click.prevent="
-                   updateQuantity(cart.product.id, cart.quantity - 1, $event)"
+                   updateCartItem(cart.product.id, cart.quantity - 1, $event)"
                   >
                     <i class="fas fa-minus"></i>
                   </a>
                   <input type="number" min="1" max="9999" class="counter-input"
                     :value="cart.quantity"
                     @keyup.enter="
-                    updateQuantity(cart.product.id, $event.target.value, $event)"
+                    updateCartItem(cart.product.id, $event.target.value, $event)"
                     @change="
-                    updateQuantity(cart.product.id, $event.target.value, $event)"
+                    updateCartItem(cart.product.id, $event.target.value, $event)"
                   >
                   <a href="#" class="addNum"
                    @click.prevent="
-                   updateQuantity(cart.product.id, cart.quantity + 1, $event)"
+                   updateCartItem(cart.product.id, cart.quantity + 1, $event)"
                   >
                     <i class="fas fa-plus"></i>
                   </a>
@@ -81,11 +81,11 @@
               </td>
             </tr>
           </tbody>
-          <tfoot class="bg-light table-borderless border-top" v-show="cartNum">
+          <tfoot class="bg-light table-borderless border-top" v-show="cartsNum">
             <tr>
               <td class="d-none d-md-table-cell" colspan="2"></td>
               <td class="d-none d-sm-table-cell"></td>
-              <td class="d-none d-sm-table-cell text-right">共 {{ cartNum }} 件</td>
+              <td class="d-none d-sm-table-cell text-right">共 {{ cartsNum }} 件</td>
               <td class="text-right">總計</td>
               <td class="text-right">{{ totalMoney | currency }}</td>
             </tr>
@@ -117,7 +117,7 @@
           </tfoot>
         </table>
 
-        <div v-show="!cartNum" class="text-center">
+        <div v-show="!cartsNum" class="text-center">
           <h4 class="h5 mb-4 text-muted">購物車是空的</h4>
           <router-link to="/products" class="btn btn-secondary btn-lg py-2">
             <span class="mr-1">
@@ -127,7 +127,7 @@
           </router-link>
         </div>
 
-        <div class="input-group mb-4 mb-xl-5" v-show="cartNum">
+        <div class="input-group mb-4 mb-xl-5" v-show="cartsNum">
           <input type="text" class="form-control" placeholder="請輸入折價券代碼" v-model.trim="couponInput">
           <div class="input-group-append">
             <button type="button" class="btn btn-dark" @click.prevent="getCoupon()">
@@ -136,14 +136,14 @@
           </div>
         </div>
 
-        <div class="checkorder-btngroup" v-show="cartNum">
+        <div class="checkorder-btngroup" v-show="cartsNum">
           <router-link to="/products" class="btn btn-muted btn-lg mb-3 mb-md-0">
             <span class="mr-1">
               <i class="fas fa-arrow-alt-circle-left"></i>
             </span>
               繼續購物
           </router-link>
-          <button type="submut" class="btn btn-dark btn-lg" :disabled="!cartNum"
+          <button type="submut" class="btn btn-dark btn-lg" :disabled="!cartsNum"
            @click.prevent="step = 2">
             確認結帳
             <span class="ml-1">
@@ -181,7 +181,7 @@
               </td>
             </tr>
           </tbody>
-          <tfoot class="bg-light table-borderless border-top" v-show="cartNum">
+          <tfoot class="bg-light table-borderless border-top" v-show="cartsNum">
             <tr v-show="coupon.title" class="text-success">
               <td class="d-none d-md-table-cell text-right" colspan="2">
                 已套用折價卷 - [{{ coupon.title }}]
@@ -290,7 +290,7 @@
               </span>
               回上一步
             </button>
-            <button type="submut" class="btn btn-dark btn-lg" :disabled="cartNum && invalid">
+            <button type="submut" class="btn btn-dark btn-lg" :disabled="cartsNum && invalid">
               確認結帳
               <span class="ml-1">
               <i class="fas fa-arrow-alt-circle-right"></i>
@@ -306,6 +306,8 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
+
 export default {
   name: 'CreateOrder',
   data() {
@@ -313,9 +315,6 @@ export default {
       step: 1,
       couponInput: '',
       coupon: {},
-      carts: {},
-      cartNum: 0,
-      totalMoney: 0,
       isCreateOrderAllow: true,
       orderData: {
         name: '',
@@ -329,81 +328,11 @@ export default {
     };
   },
   methods: {
-    updateQuantity(id, num) {
-      const vm = this;
-      const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/shopping`;
-      if (num <= 0) {
-        const msg = {
-          icon: 'error',
-          title: '商品數量必須大於 1 樣',
-        };
-        vm.$store.dispatch('alertMessageModules/openToast', msg);
-      } else {
-        const data = {
-          product: id,
-          quantity: num,
-        };
-        vm.$store.dispatch('updateLoading', true, { root: true });
-
-        vm.$http.patch(url, data).then(() => {
-          vm.$store.dispatch('updateLoading', false, { root: true });
-          vm.$emit('get-carts');
-          vm.getCarts();
-          const msg = {
-            icon: 'success',
-            title: '更新購物車成功',
-          };
-          vm.$store.dispatch('alertMessageModules/openToast', msg);
-        }).catch(() => {
-          vm.$store.dispatch('updateLoading', false, { root: true });
-          const msg = {
-            icon: 'error',
-            title: '更新購物車失敗',
-          };
-          vm.$store.dispatch('alertMessageModules/openToast', msg);
-        });
-      }
-    },
-    getCarts() {
-      const vm = this;
-      const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/shopping`;
-      vm.$store.dispatch('updateLoading', true, { root: true });
-      let num = 0;
-      let total = 0;
-      vm.$http.get(url).then((res) => {
-        vm.carts = res.data.data;
-        vm.carts.forEach((item) => {
-          num += Number(item.quantity);
-          const price = item.product.price * item.quantity;
-          total += price;
-        });
-        vm.cartNum = num;
-        vm.totalMoney = total;
-        vm.$store.dispatch('updateLoading', false, { root: true });
-      });
+    updateCartItem(id, num) {
+      this.$store.dispatch('cartModules/updateCartItem', { id, num, method: 'patch' });
     },
     delCartItem(id) {
-      const vm = this;
-      const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/shopping/${id}`;
-      vm.$store.dispatch('updateLoading', true, { root: true });
-      vm.$http.delete(url, { product: id }).then(() => {
-        const msg = {
-          icon: 'success',
-          title: '已刪除此筆資料',
-        };
-        vm.$store.dispatch('updateLoading', false, { root: true });
-        vm.$store.dispatch('alertMessageModules/openToast', msg);
-
-        vm.$emit('get-carts');
-        vm.getCarts();
-      }).catch(() => {
-        const msg = {
-          icon: 'error',
-          title: '刪除購物車失敗',
-        };
-        vm.$store.dispatch('alertMessageModules/openToast', msg);
-        vm.$store.dispatch('updateLoading', false, { root: true });
-      });
+      this.$store.dispatch('cartModules/delCartItem', id);
     },
     getCoupon() {
       const vm = this;
@@ -474,9 +403,13 @@ export default {
         vm.$store.dispatch('updateLoading', false, { root: true });
       });
     },
+    ...mapActions('cartModules', ['getCarts']),
+  },
+  computed: {
+    ...mapGetters('cartModules', ['carts', 'cartsNum', 'totalMoney']),
   },
   created() {
-    this.getCarts();
+    this.$store.dispatch('cartModules/getCarts');
   },
 };
 </script>
