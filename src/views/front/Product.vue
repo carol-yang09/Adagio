@@ -1,8 +1,6 @@
 <template>
   <div class="product">
-    <loading :active.sync="isLoading" :is-full-page="true"></loading>
-
-    <div class="pagebanner" :style="{backgroundImage: 'url(' + bannerImg + ')'}">
+    <div class="pagebanner" :style="{backgroundImage: 'url(' + categoryImg + ')'}">
       <h2>{{ product.category }}</h2>
     </div>
 
@@ -56,18 +54,20 @@
             </ul>
             <div class="product-cart">
               <div class="counter">
-                <a href="#" class="lessNum" @click.prevent="lessNum()">
+                <a href="#" class="lessNum"
+                 @click.prevent="lessNum(counterNum - 1)">
                   <i class="fas fa-minus"></i>
                 </a>
                 <input type="number" min="1" readonly="readonly" class="counter-input"
                  v-model="counterNum">
-                <a href="#" class="addNum" @click.prevent="counterNum += 1">
+                <a href="#" class="addNum"
+                 @click.prevent="counterNum += 1">
                   <i class="fas fa-plus"></i>
                 </a>
               </div>
 
               <a href="#" class="btn btn-dark"
-               @click.prevent="updateCartItem(product.id)">
+               @click.prevent="updateCartItem(product.id, counterNum)">
                 <span class="mr-1">
                   <i class="fas fa-shopping-basket"></i>
                 </span>
@@ -100,11 +100,7 @@
 </template>
 
 <script>
-import bannerImgAllmenu from '@/assets/images/banner-allmenu.jpg';
-import bannerImgMaintmeal from '@/assets/images/banner-mainmeal.jpg';
-import bannerImgLightmeal from '@/assets/images/banner-lightmeal.jpg';
-import bannerImgDessert from '@/assets/images/banner-dessert.jpg';
-import bannerImgDrinks from '@/assets/images/banner-drinks.jpg';
+import { mapGetters, mapActions } from 'vuex';
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import 'swiper/css/swiper.css';
 
@@ -112,37 +108,8 @@ export default {
   name: 'Product',
   data() {
     return {
-      isLoading: false,
       counterNum: 1,
-      product: {},
-      relatedProducts: [],
-      carts: [],
-      favorites: [],
-      isFavorite: false,
       categoryName: '',
-      bannerImg: '',
-      categories: [
-        {
-          title: '全部',
-          bannerImg: bannerImgAllmenu,
-        },
-        {
-          title: '主餐',
-          bannerImg: bannerImgMaintmeal,
-        },
-        {
-          title: '輕食',
-          bannerImg: bannerImgLightmeal,
-        },
-        {
-          title: '甜點',
-          bannerImg: bannerImgDessert,
-        },
-        {
-          title: '飲品',
-          bannerImg: bannerImgDrinks,
-        },
-      ],
       swiperOption: {
         slidesPerView: 1,
         spaceBetween: 30,
@@ -166,165 +133,76 @@ export default {
           },
         },
       },
+      routerName: this.$route.name,
     };
   },
   methods: {
     lessNum() {
-      if (this.counterNum > 2) {
-        this.counterNum -= 1;
-      } else {
-        this.counterNum = 1;
+      switch (true) {
+        case this.counterNum > 2:
+          this.counterNum -= 1;
+          break;
+        default:
+          this.counterNum = 1;
+          break;
       }
     },
-    getRelated(category) {
-      const vm = this;
-      const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/products`;
-      vm.isLoading = true;
-      vm.$http.get(url).then((res) => {
-        vm.relatedProducts = res.data.data.filter((item) => item.category === category
-        && item.id !== vm.product.id);
-
-        vm.isLoading = false;
-      });
+    updateCartItem(id, num) {
+      this.$store.dispatch('cartModules/updateCartItem', { id, num, method: 'add' });
     },
-    getProduct(id) {
-      const vm = this;
-      const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/product/${id}`;
-      vm.isLoading = true;
-      vm.$http.get(url).then((res) => {
-        vm.product = res.data.data;
-        vm.isLoading = false;
-        vm.getRelated(vm.product.category);
-        vm.getFavorites();
-
-        // 依分類設定封面圖
-        vm.categories.forEach((item, index) => {
-          if (item.title === vm.product.category) {
-            vm.bannerImg = vm.categories[index].bannerImg;
-          }
+    getData() {
+      const { productId } = this.$route.params;
+      this.$store.dispatch('productsModules/getProduct', { productId })
+        .catch(() => {
+          this.$swal({
+            title: '錯誤',
+            text: '找不到此商品，將返回商品頁',
+            confirmButtonColor: '#dc3545',
+            confirmButtonText: '確認',
+            customClass: {
+              title: 'swal-title swal-title-danger',
+            },
+          }).then(() => {
+            this.$router.push('/products');
+          });
         });
-      }).catch(() => {
-        vm.isLoading = false;
-        vm.$swal({
-          title: '錯誤',
-          text: '找不到此商品',
-          confirmButtonColor: '#dc3545',
-          confirmButtonText: '確認',
-          customClass: {
-            title: 'swal-title swal-title-danger',
-          },
-        }).then(() => {
-          vm.$router.push('/products');
-        });
-      });
-    },
-    getCarts() {
-      const vm = this;
-      const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/shopping`;
-      vm.isLoading = true;
-      vm.$http.get(url).then((res) => {
-        vm.carts = res.data.data;
-        vm.isLoading = false;
-      });
-    },
-    updateCartItem(id) {
-      const vm = this;
-      const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/shopping`;
-      let n = 0;
-      let method = 'post';
 
-      n = Number(vm.counterNum);
-
-      const isInCart = vm.carts.filter((item) => item.product.id === id);
-
-      if (isInCart.length > 0) {
-        method = 'patch';
-        n = Number(isInCart[0].quantity) + Number(vm.counterNum);
-      }
-
-      const data = {
-        product: id,
-        quantity: n,
-      };
-      vm.isLoading = true;
-      vm.$http[method](url, data).then(() => {
-        vm.isLoading = false;
-        vm.getCarts();
-        vm.$emit('get-carts');
-
-        const msg = {
-          icon: 'success',
-          title: '更新購物車成功',
-        };
-        vm.$bus.$emit('alertmessage', msg);
-      }).catch(() => {
-        vm.isLoading = false;
-
-        const msg = {
-          icon: 'error',
-          title: '更新購物車失敗',
-        };
-        vm.$bus.$emit('alertmessage', msg);
-      });
-    },
-    getFavorites() {
-      const vm = this;
-      vm.favorites = JSON.parse(localStorage.getItem('favoriteData')) || [];
-
-      // 查詢此商品是否在我的最愛中
-      vm.isFavorite = false;
-      vm.favorites.forEach((favoriteItem) => {
-        if (vm.product.id === favoriteItem.id) {
-          vm.isFavorite = true;
-        }
-      });
+      this.$store.dispatch('favoriteModules/getFavorites')
+        .then(() => this.$store.dispatch('productsModules/getProducts', { routerName: this.$route.name, productId }));
     },
     addFavorite(item) {
-      const vm = this;
-      const favoriteData = {
-        id: item.id,
-        title: item.title,
-        imageUrl: item.imageUrl[0],
-      };
-      vm.favorites.push(favoriteData);
-      localStorage.setItem('favoriteData', JSON.stringify(vm.favorites));
-
-      const msg = {
-        icon: 'success',
-        title: '已加入我的最愛',
-      };
-      vm.$bus.$emit('alertmessage', msg);
-
-      vm.$emit('get-favorites');
-      vm.getFavorites();
+      this.$store.dispatch('favoriteModules/addFavorite', item);
     },
     delFavoriteItem(item) {
-      const vm = this;
-      vm.favorites.forEach((favoriteItem, index) => {
-        if (favoriteItem.id === item.id) {
-          vm.favorites.splice(index, 1);
+      this.$store.dispatch('favoriteModules/delFavoriteItem', item);
+    },
+    ...mapActions('cartModules', ['getCarts']),
+  },
+  computed: {
+    isFavorite() {
+      let isFavorite = false;
+      this.favorites.forEach((favoriteItem) => {
+        if (this.product.id === favoriteItem.id) {
+          isFavorite = true;
         }
       });
-      localStorage.setItem('favoriteData', JSON.stringify(vm.favorites));
-
-      const msg = {
-        icon: 'success',
-        title: '已刪除我的最愛',
-      };
-      vm.$bus.$emit('alertmessage', msg);
-
-      vm.$emit('get-favorites');
-      vm.getFavorites();
+      return isFavorite;
     },
+    relatedProducts() {
+      return this.products.filter((item) => item.category === this
+        .product.category && item.id !== this.product.id);
+    },
+    ...mapGetters('cartModules', ['carts']),
+    ...mapGetters('favoriteModules', ['favorites']),
+    ...mapGetters('productsModules', ['products', 'product', 'categories', 'categoryImg']),
   },
   components: {
     Swiper,
     SwiperSlide,
   },
   created() {
-    const id = this.$route.params.productId;
-    this.getProduct(id);
-    this.getCarts();
+    this.$store.dispatch('cartModules/getCarts');
+    this.getData();
   },
 };
 </script>

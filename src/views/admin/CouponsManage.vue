@@ -1,7 +1,5 @@
 <template>
   <div>
-    <loading :active.sync="isLoading" :is-full-page="true"></loading>
-
     <div class="mb-4 text-right">
       <button type="button" class="btn btn-dark" @click.prevent="openModal('create')">
         新增優惠劵
@@ -130,7 +128,7 @@
       </div>
     </div>
 
-    <Pagination :pages="pagination" @get-data="getCoupons"/>
+    <Pagination @get-data="getCoupons"/>
   </div>
 </template>
 
@@ -143,8 +141,6 @@ export default {
   name: 'CouponsManage',
   data() {
     return {
-      isLoading: false,
-      pagination: {},
       coupons: {},
       tempCoupon: {
         title: '',
@@ -164,11 +160,11 @@ export default {
     getCoupons(page = 1) {
       const vm = this;
       const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/admin/ec/coupons?page=${page}`;
-      vm.isLoading = true;
+      vm.$store.dispatch('updateLoading', true, { root: true });
       vm.$http.get(url).then((res) => {
         vm.coupons = res.data.data;
-        vm.pagination = res.data.meta.pagination;
-        vm.isLoading = false;
+        vm.$store.dispatch('paginationModules/getPagination', { routerName: this.$route.name, data: res.data });
+        vm.$store.dispatch('updateLoading', false, { root: true });
       });
     },
     openModal(status, item) {
@@ -207,44 +203,44 @@ export default {
         status = '更新';
         url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/admin/ec/coupon/${vm.tempCoupon.id}`;
       }
-      vm.isLoading = true;
+      vm.$store.dispatch('updateLoading', true, { root: true });
       vm.$http[method](url, vm.tempCoupon).then(() => {
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false, { root: true });
         vm.getCoupons();
         const msg = {
           icon: 'success',
           title: `${status}優惠劵成功`,
         };
-        vm.$bus.$emit('alertmessage', msg);
+        vm.$store.dispatch('alertMessageModules/openToast', msg);
       }).catch(() => {
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false, { root: true });
         const msg = {
           icon: 'error',
           title: `${status}優惠劵失敗`,
         };
-        vm.$bus.$emit('alertmessage', msg);
+        vm.$store.dispatch('alertMessageModules/openToast', msg);
       });
       $('#editModal').modal('hide');
     },
     delCoupon() {
       const vm = this;
       const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/admin/ec/coupon/${vm.tempCoupon.id}`;
-      vm.isLoading = true;
+      vm.$store.dispatch('updateLoading', true, { root: true });
       vm.$http.delete(url).then(() => {
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false, { root: true });
         vm.getCoupons();
         const msg = {
           icon: 'success',
           title: '刪除優惠劵成功',
         };
-        vm.$bus.$emit('alertmessage', msg);
+        vm.$store.dispatch('alertMessageModules/openToast', msg);
       }).catch(() => {
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false, { root: true });
         const msg = {
           icon: 'error',
           title: '刪除優惠劵失敗',
         };
-        vm.$bus.$emit('alertmessage', msg);
+        vm.$store.dispatch('alertMessageModules/openToast', msg);
       });
       $('#delModal').modal('hide');
     },
