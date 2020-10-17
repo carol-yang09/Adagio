@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import axios from 'axios';
+import router from '@/router';
 
 import categoryImgAllmenu from '@/assets/images/banner-allmenu.jpg';
 import categoryImgMaintmeal from '@/assets/images/banner-mainmeal.jpg';
@@ -71,10 +72,21 @@ export default ({
           context.commit('PRODUCT', res.data.data);
           context.commit('CATEGORY_IMG', res.data.data.category);
           context.commit('LOADING', false, { root: true });
-          resolve();
         }).catch(() => {
           context.commit('LOADING', false, { root: true });
+          Vue.swal({
+            title: '錯誤',
+            text: '找不到此商品，將返回商品頁',
+            confirmButtonColor: '#dc3545',
+            confirmButtonText: '確認',
+            customClass: {
+              title: 'swal-title swal-title-danger',
+            },
+          }).then(() => {
+            router.push('/products');
+          });
         });
+        resolve();
       });
     },
     updateCategoryImg(context, category) {
