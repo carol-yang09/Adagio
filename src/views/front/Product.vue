@@ -152,21 +152,7 @@ export default {
     },
     getData() {
       const { productId } = this.$route.params;
-      this.$store.dispatch('productsModules/getProduct', { productId })
-        .catch(() => {
-          this.$swal({
-            title: '錯誤',
-            text: '找不到此商品，將返回商品頁',
-            confirmButtonColor: '#dc3545',
-            confirmButtonText: '確認',
-            customClass: {
-              title: 'swal-title swal-title-danger',
-            },
-          }).then(() => {
-            this.$router.push('/products');
-          });
-        });
-
+      this.$store.dispatch('productsModules/getProduct', { productId });
       this.$store.dispatch('favoriteModules/getFavorites')
         .then(() => this.$store.dispatch('productsModules/getProducts', { routerName: this.$route.name, productId }));
     },
