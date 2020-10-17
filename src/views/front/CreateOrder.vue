@@ -382,7 +382,7 @@ export default {
       vm.$http.post(url, vm.orderData).then((res) => {
         vm.$store.dispatch('updateLoading', false, { root: true });
         const { id } = res.data.data;
-        vm.$emit('get-carts');
+        vm.$store.dispatch('cartModules/getCarts');
         vm.$swal({
           title: '已成立訂單',
           text: '訂單已成立，請盡速結帳喔!!',
