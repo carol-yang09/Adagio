@@ -1,7 +1,5 @@
 <template>
   <div>
-    <loading :active.sync="isLoading" :is-full-page="true"></loading>
-
     <div class="table-responsive">
       <table class="table">
         <thead>
@@ -43,7 +41,7 @@
       </table>
     </div>
 
-    <Pagination :pages="pagination" @get-data="getOrders"/>
+    <Pagination @get-data="getOrders"/>
   </div>
 </template>
 
@@ -54,7 +52,6 @@ export default {
   name: 'OrdersManage',
   data() {
     return {
-      isLoading: false,
       pagination: {},
       orders: {},
     };
@@ -63,11 +60,11 @@ export default {
     getOrders(page = 1) {
       const vm = this;
       const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/admin/ec/orders?page=${page}`;
-      vm.isLoading = true;
+      vm.$store.dispatch('updateLoading', true, { root: true });
       vm.$http.get(url).then((res) => {
         vm.orders = res.data.data;
-        vm.pagination = res.data.meta.pagination;
-        vm.isLoading = false;
+        vm.$store.dispatch('paginationModules/getPagination', { routerName: this.$route.name, data: res.data });
+        vm.$store.dispatch('updateLoading', false, { root: true });
       });
     },
     setOrderPaid(item) {
@@ -77,22 +74,22 @@ export default {
       if (!item.paid) {
         url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/admin/ec/orders/${item.id}/unpaid`;
       }
-      vm.isLoading = true;
+      vm.$store.dispatch('updateLoading', true, { root: true });
       vm.$http.patch(url, item.id).then(() => {
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false, { root: true });
         vm.getOrders();
         const msg = {
           icon: 'success',
           title: '更新成功',
         };
-        vm.$bus.$emit('alertmessage', msg);
+        vm.$store.dispatch('alertMessageModules/openToast', msg);
       }).catch(() => {
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false, { root: true });
         const msg = {
           icon: 'error',
           title: '更新失敗',
         };
-        vm.$bus.$emit('alertmessage', msg);
+        vm.$store.dispatch('alertMessageModules/openToast', msg);
       });
     },
   },

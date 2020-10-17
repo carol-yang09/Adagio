@@ -1,7 +1,5 @@
 <template>
   <div>
-    <loading :active.sync="isLoading" :is-full-page="true"></loading>
-
     <div class="pagebanner pagebanner-img">
       <h2>結帳流程</h2>
     </div>
@@ -110,7 +108,6 @@ export default {
   name: 'Order',
   data() {
     return {
-      isLoading: false,
       step: 3,
       orderId: '',
       order: {},
@@ -120,12 +117,12 @@ export default {
     getOrder(id) {
       const vm = this;
       const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/orders/${id}`;
-      vm.isLoading = true;
+      vm.$store.dispatch('updateLoading', true, { root: true });
       vm.$http.get(url).then((res) => {
         vm.order = res.data.data;
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false, { root: true });
       }).catch(() => {
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false, { root: true });
         vm.$swal({
           title: '出錯了',
           text: '糟糕，找不到此訂單，將返回首頁',
@@ -143,9 +140,9 @@ export default {
     payOrder(id) {
       const vm = this;
       const url = `${process.env.VUE_APP_APIPATH}/${process.env.VUE_APP_UUID}/ec/orders/${id}/paying`;
-      vm.isLoading = true;
+      vm.$store.dispatch('updateLoading', true, { root: true });
       vm.$http.post(url).then(() => {
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false, { root: true });
         vm.getOrder(id);
         vm.$swal({
           title: '付款成功',
@@ -166,8 +163,8 @@ export default {
           icon: 'error',
           title: '付款失敗',
         };
-        vm.$bus.$emit('alertmessage', msg);
-        vm.isLoading = false;
+        vm.$store.dispatch('alertMessageModules/openToast', msg);
+        vm.$store.dispatch('updateLoading', false, { root: true });
       });
     },
   },
