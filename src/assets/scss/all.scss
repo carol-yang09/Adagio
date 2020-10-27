@@ -188,6 +188,13 @@ $font-logo: 'Kaushan Script', cursive;
   min-width: 15rem;
 }
 
+@include desktop {
+  body.swal2-toast-shown .swal2-container.swal2-center {
+    top: 0;
+    transform: translate(-50%,0);
+  }
+}
+
 .swal2-modal {
   padding: 2rem;
 }
