@@ -12,22 +12,26 @@ ul {
 input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
-input[type="number"]{
+
+input[type="number"] {
   -moz-appearance: textfield;
 }
 
 // select 選單設定
 select:required:invalid {
-	color: $gray-600;
+  color: $gray-600;
 }
+
+
 option[value=""][disabled] {
-	display: none;
+  display: none;
 }
+
 option {
-	color: $dark;
+  color: $dark;
 }
 
 // 禁止按鈕
-button[disabled]{
+button[disabled] {
   cursor: not-allowed;
 }
