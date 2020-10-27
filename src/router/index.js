@@ -5,10 +5,6 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '*',
-    redirect: '/',
-  },
-  {
     path: '/',
     component: () => import('../views/Layout.vue'),
     children: [
@@ -79,6 +75,10 @@ const routes = [
         component: () => import('../views/admin/StoragesManage.vue'),
       },
     ],
+  },
+  {
+    path: '*',
+    redirect: '/',
   },
 ];
 
