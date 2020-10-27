@@ -194,10 +194,13 @@ $font-logo: 'Kaushan Script', cursive;
 
 // 自訂 vue-sweetalert2 樣式
 
-.swal-title {
+.swal2-title.swal-title {
   margin-bottom: 1.5rem;
   padding-bottom: 0.5rem;
   font-size: 1.5rem;
+}
+
+.swal-title {
   border-bottom: 4px solid $dark;
 }
 
