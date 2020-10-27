@@ -267,7 +267,13 @@ export default {
 }
 
 .counter {
-  margin: 0;
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 1.5rem;
+  @include mobile {
+    max-width: 10rem;
+    margin: 0;
+  }
 }
 
 .product-subtitle {
