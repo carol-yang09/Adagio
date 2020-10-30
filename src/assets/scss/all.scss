@@ -209,7 +209,7 @@ $font-logo: 'Kaushan Script', cursive;
 }
 
 @include desktop {
-  body.swal2-toast-shown .swal2-container.swal2-center {
+  .swal2-toast-shown .swal2-container.swal2-center.swal2-backdrop-show {
     top: 0;
     transform: translate(-50%,0);
   }
