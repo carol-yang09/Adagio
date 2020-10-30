@@ -175,11 +175,31 @@ $font-logo: 'Kaushan Script', cursive;
   font-size: 2rem;
 }
 
-// swiper pagination 設定
+// swiper 設定
 
 .swiper-container{
   --swiper-theme-color: $dark;
   --swiper-navigation-size: 1.5rem;
+}
+
+.bullet-custom {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  margin: 0 0.5rem 0.5rem;
+  background: rgba($light, 0.5);
+  border: 1px solid $dark;
+  border-radius: 50%;
+  &:hover {
+    background: rgba($light, 0.8);
+  }
+}
+
+.bullet-custom-active{
+  background: $white;
+  &:hover {
+    background: $white;
+  }
 }
 
 // 更改 vue-sweetalert2 預設樣式
@@ -188,16 +208,26 @@ $font-logo: 'Kaushan Script', cursive;
   min-width: 15rem;
 }
 
+@include desktop {
+  body.swal2-toast-shown .swal2-container.swal2-center {
+    top: 0;
+    transform: translate(-50%,0);
+  }
+}
+
 .swal2-modal {
   padding: 2rem;
 }
 
 // 自訂 vue-sweetalert2 樣式
 
-.swal-title {
+.swal2-title.swal-title {
   margin-bottom: 1.5rem;
   padding-bottom: 0.5rem;
   font-size: 1.5rem;
+}
+
+.swal-title {
   border-bottom: 4px solid $dark;
 }
 

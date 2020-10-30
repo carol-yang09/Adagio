@@ -108,9 +108,6 @@ export default {
       const url = `${process.env.VUE_APP_APIPATH}/auth/check`;
       vm.token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
       vm.$store.dispatch('updateLoading', true, { root: true });
-
-      vm.$http.defaults.headers.common.Authorization = `Bearer ${vm.token}`;
-
       vm.$http.post(url, { api_token: vm.token }).then((res) => {
         if (!res.data.success) {
           const msg = {
@@ -118,11 +115,11 @@ export default {
             title: '出現錯誤',
           };
           vm.$store.dispatch('alertMessageModules/openToast', msg);
-
           vm.$router.push('/login');
         }
 
         vm.checkSuccess = true;
+        vm.$http.defaults.headers.common.Authorization = `Bearer ${vm.token}`;
         vm.$store.dispatch('updateLoading', false, { root: true });
       });
     },

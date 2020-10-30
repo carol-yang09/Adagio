@@ -11,9 +11,8 @@ export default ({
     openToast(context, msg) {
       Vue.swal({
         toast: true,
-        position: 'top',
         showConfirmButton: false,
-        timer: 3000,
+        timer: 2500,
         icon: msg.icon,
         title: msg.title,
       });
