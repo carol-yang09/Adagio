@@ -175,11 +175,31 @@ $font-logo: 'Kaushan Script', cursive;
   font-size: 2rem;
 }
 
-// swiper pagination 設定
+// swiper 設定
 
 .swiper-container{
   --swiper-theme-color: $dark;
   --swiper-navigation-size: 1.5rem;
+}
+
+.bullet-custom {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  margin: 0 0.5rem 0.5rem;
+  background: rgba($light, 0.5);
+  border: 1px solid $dark;
+  border-radius: 50%;
+  &:hover {
+    background: rgba($light, 0.8);
+  }
+}
+
+.bullet-custom-active{
+  background: $white;
+  &:hover {
+    background: $white;
+  }
 }
 
 // 更改 vue-sweetalert2 預設樣式
