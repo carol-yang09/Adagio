@@ -77,12 +77,7 @@
       </ValidationObserver>
     </div>
 
-    <div class="contact">
-      <div class="contact-map">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d8115.5320544971555!2d121.56105938581133!3d25.032086088602032!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442abb6da80a7ad%3A0xacc4d11dc963103c!2z5Y-w5YyXMTAx!5e0!3m2!1szh-TW!2stw!4v1600271959150!5m2!1szh-TW!2stw"
-          frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0">
-        </iframe>
-      </div>
+    <div class="contact contact-connection">
       <div class="contact-info" data-aos="zoom-in" data-aos-duration="1000">
         <h2 class="contact-title">
           聯絡資訊
@@ -131,6 +126,11 @@
         </ul>
       </div>
 
+      <div class="contact-map">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d8115.5320544971555!2d121.56105938581133!3d25.032086088602032!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442abb6da80a7ad%3A0xacc4d11dc963103c!2z5Y-w5YyXMTAx!5e0!3m2!1szh-TW!2stw!4v1600271959150!5m2!1szh-TW!2stw"
+          frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0">
+        </iframe>
+      </div>
     </div>
   </div>
 </template>
@@ -175,6 +175,12 @@ export default {
   align-items: center;
   @include desktop-s {
     flex-direction: row;
+  }
+}
+
+@include desktop-s {
+  .contact-connection {
+    flex-direction: row-reverse;
   }
 }
 
