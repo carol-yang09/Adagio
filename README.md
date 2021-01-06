@@ -30,7 +30,7 @@
 * Vuex
 * RWD
 * SCSS
-* Bootstrop
+* Bootstrap
 * RESTful API
 * ESlint - Airbnb
 * Vue 插件：vue-awesome-swiper (輪播)、vue-loading-overlay (載入效果)、vee-validate (表單驗證)、vue-sweetalert2 (彈跳視窗)、vue2-editor (編輯器)、AOS (頁面滾動動畫)
@@ -39,19 +39,21 @@
 
 ### 首頁
 
-* 餐廳特色、產品特色、顧客回饋輪播
+* 餐廳特色、產品特色、顧客留言輪播
 
 ![home1.gif](https://i.postimg.cc/FRdxRwvg/home1.gif)
 
 ### 產品列表
 
 * 產品搜尋、分類切換、分頁切換、加入我的最愛、加入購物車
+* 串接 API，顯示產品列表
 
 ![products.png](https://i.postimg.cc/PJz85Jtf/products.png)
 
 ### 單一產品
 
-* 單一產品介紹、相關產品列表、加入我的最愛、加入購物車
+* 單一產品介紹、相關產品列表、加入我的最愛、選擇產品數量加入購物車
+* 串接 API，顯示產品詳細內容
 
 ![product-2.png](https://i.postimg.cc/mD9HKVJH/product-2.png)
 
@@ -61,7 +63,7 @@
 * 確認購物清單，刪除、修改購物車
 * 填寫訂購資料
     - 驗證訂購表單，成功後才可進入結帳頁面
-* 完成訂單回饋
+* 完成訂單後，顯示彈跳視窗回饋
 
 ![checkout.gif](https://i.postimg.cc/TwYywbXV/checkout.gif)
 
@@ -73,7 +75,8 @@
 
 ### 聯絡我們
 
-* 驗證留言表單、餐廳聯絡資訊
+* 使用 vee-validate 插件驗證驗證留言表單
+* 顯示餐廳聯絡資訊
 
 ![contact.gif](https://i.postimg.cc/9fBRCpsX/contact.gif)
 
@@ -83,7 +86,7 @@
 * 產品管理：產品新增、編輯、刪除
 * 訂單管理：訂單新增、編輯、刪除
 * 優惠劵管理：優惠劵新增、編輯、刪除
-* 圖片管理：圖片編輯、刪除
+* 圖片管理：圖片刪除
 
 ![admin.gif](https://i.postimg.cc/SxYQgrm1/admin.gif)
 
@@ -107,6 +110,7 @@
 * [vue2-editor (編輯器)](https://github.com/davidroyer/vue2-editor)
 * [vue-sweetalert2 (彈框效果)](https://github.com/avil13/vue-sweetalert2)
 * [AOS](https://github.com/michalsnik/aos)
+* [Bootstrap](https://github.com/twbs/bootstrap)
 * [jQuery](https://jquery.com/)
 * [Google Font](https://fonts.google.com/)
 * [Font Awesome ](https://fontawesome.com/)
@@ -117,4 +121,4 @@
 
 ## API
 
-[六角學院](https://challenge.thef2e.com/user/1989?schedule=3949#works-3949)
+後端 API 由 [六角學院](https://www.hexschool.com/) 所提供
