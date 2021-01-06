@@ -41,7 +41,7 @@
 
 * 餐廳特色、產品特色、顧客回饋輪播
 
-![home.gif](https://i.postimg.cc/mkXyDV9G/home.gif)
+![home.gif](https://i.postimg.cc/VvZZTXzD/home.gif)
 
 ### 產品列表
 
@@ -85,7 +85,7 @@
 * 優惠劵管理：優惠劵新增、編輯、刪除
 * 圖片管理：圖片編輯、刪除
 
-![admin.gif](https://i.postimg.cc/0jhrcHKn/admin.gif)
+![admin.gif](https://i.postimg.cc/J7pFGCjZ/admin.gif)
 
 ### 我的最愛、購物車
 
